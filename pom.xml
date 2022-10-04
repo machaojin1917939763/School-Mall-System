@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <groupId>com.machaojin.gulimall</groupId>
+    <artifactId>gulimall</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <description>商城的聚合服务，把其他服务聚合起来</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>product</module>
+        <module>member</module>
+        <module>order</module>
+        <module>ware</module>
+        <module>coupon</module>
+    </modules>
+
+
+</project>
