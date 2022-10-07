@@ -16,6 +16,10 @@
         <module>order</module>
         <module>ware</module>
         <module>coupon</module>
+        <module>renren-fast</module>
+        <module>ruoyi</module>
+        <module>common</module>
+        <module>gateway</module>
     </modules>
 
 

@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: member
+  cloud:
+    nacos:
+      config:
+        server-addr: 101.42.149.76:8848
+      discovery:
+        server-addr: 101.42.149.76:8848

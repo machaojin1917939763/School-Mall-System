@@ -1,0 +1,13 @@
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      config:
+        server-addr: 101.42.149.76:8848
+      discovery:
+        server-addr: 101.42.149.76:8848
+#        namespace: 9e0a4db5-ae89-4846-a296-df1ad3be146b
+server:
+  port: 8087

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.machaojin.mapper.CommentReplayMapper">
+    
+    <resultMap type="CommentReplay" id="CommentReplayResult">
+        <result property="id"    column="id"    />
+        <result property="commentId"    column="comment_id"    />
+        <result property="replyId"    column="reply_id"    />
+    </resultMap>
+
+    <sql id="selectCommentReplayVo">
+        select id, comment_id, reply_id from pms_comment_replay
+    </sql>
+
+    <select id="selectCommentReplayList" parameterType="CommentReplay" resultMap="CommentReplayResult">
+        <include refid="selectCommentReplayVo"/>
+        <where>  
+            <if test="commentId != null "> and comment_id = #{commentId}</if>
+            <if test="replyId != null "> and reply_id = #{replyId}</if>
+        </where>
+    </select>
+    
+    <select id="selectCommentReplayById" parameterType="Long" resultMap="CommentReplayResult">
+        <include refid="selectCommentReplayVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCommentReplay" parameterType="CommentReplay" useGeneratedKeys="true" keyProperty="id">
+        insert into pms_comment_replay
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="commentId != null">comment_id,</if>
+            <if test="replyId != null">reply_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="commentId != null">#{commentId},</if>
+            <if test="replyId != null">#{replyId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCommentReplay" parameterType="CommentReplay">
+        update pms_comment_replay
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="commentId != null">comment_id = #{commentId},</if>
+            <if test="replyId != null">reply_id = #{replyId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCommentReplayById" parameterType="Long">
+        delete from pms_comment_replay where id = #{id}
+    </delete>
+
+    <delete id="deleteCommentReplayByIds" parameterType="String">
+        delete from pms_comment_replay where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

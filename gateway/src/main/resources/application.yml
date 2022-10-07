@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    active: dev
+  cloud:
+   gateway:
+     routes:
+
+       - id: product_route
+         uri: lb://product
+         predicates:
+           - Path=/api/product/**
+               ##路径重写，将api路径重写成renren-fast/路径，后面的参数不变
+         filters:
+           - RewritePath=/api/product/?(?<segment>.*), /$\{segment}
+
+
+       - id: admin_route
+         uri: lb://renren-fast
+         predicates:
+           - Path=/api/**
+          ##路径重写，将api路径重写成renren-fast/路径，后面的参数不变
+         filters:
+           - RewritePath=/api/?(?<segment>.*), /renren-fast/$\{segment}
+
+
+
+##前端项目发送请求时带着api
+  ## 503的是服务未找到，因为lb是进行负载均衡  引入 spring-cloud-starter-loadbalancer 依赖就好
+ ## 503 的 gatefilter 格式不对- RewritePath=/api/?(?<segment>.*), /renren-fast\{segment}
+##http://localhost:8087/api/captcha.jpg?uuid=7ef0bd09-7836-4578-85ab-b16a01379419  现在注册中心中找到renren-fast，但是地址时错的，需要重写
