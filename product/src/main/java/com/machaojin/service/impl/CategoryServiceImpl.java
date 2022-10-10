@@ -76,6 +76,10 @@ public class CategoryServiceImpl implements ICategoryService
     @Override
     public int deleteCategoryByCatIds(Long[] catIds)
     {
+
+
+
+        //TODO 逻辑删除分类选项，判断删除的分类是否被其他模块引用，如果发生引用就不能删除
         return categoryMapper.deleteCategoryByCatIds(catIds);
     }
 

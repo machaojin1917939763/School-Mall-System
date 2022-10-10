@@ -21,6 +21,19 @@
         <artifactId>ruoyi</artifactId>
         <version>3.8.4</version>
         <scope>compile</scope>
+        <exclusions>
+            <exclusion>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+
+
+    <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>3.5.2</version>
     </dependency>
 
 <!--    测试包-->

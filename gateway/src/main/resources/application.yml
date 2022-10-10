@@ -4,7 +4,15 @@ spring:
   cloud:
    gateway:
      routes:
+       #第三方工具类路由
+       - id: third-party_route
+         uri: lb://third-party
+         predicates:
+           - Path=/api/third-party/**
+         filters:
+           - RewritePath=/api/third-party/?(?<segment>.*), /third-party/$\{segment}
 
+       #产品微服务路由
        - id: product_route
          uri: lb://product
          predicates:
@@ -14,6 +22,7 @@ spring:
            - RewritePath=/api/product/?(?<segment>.*), /$\{segment}
 
 
+       #人人开源后台管理路由
        - id: admin_route
          uri: lb://renren-fast
          predicates:

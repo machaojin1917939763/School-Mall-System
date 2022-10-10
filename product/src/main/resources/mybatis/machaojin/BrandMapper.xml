@@ -27,12 +27,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="showStatus != null "> and show_status = #{showStatus}</if>
             <if test="firstLetter != null  and firstLetter != ''"> and first_letter = #{firstLetter}</if>
             <if test="sort != null "> and sort = #{sort}</if>
+            <if test="true">is_delete = 1</if>
         </where>
+
     </select>
     
     <select id="selectBrandByBrandId" parameterType="Long" resultMap="BrandResult">
         <include refid="selectBrandVo"/>
-        where brand_id = #{brandId}
+        where brand_id = #{brandId} and is_delete = 1
     </select>
         
     <insert id="insertBrand" parameterType="Brand" useGeneratedKeys="true" keyProperty="brandId">
@@ -68,14 +70,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where brand_id = #{brandId}
     </update>
 
-    <delete id="deleteBrandByBrandId" parameterType="Long">
-        delete from pms_brand where brand_id = #{brandId}
-    </delete>
+    <update id="deleteBrandByBrandId" parameterType="Long">
+       update pms_brand set is_delete = 0 where brand_id = #{brandId}
+    </update>
 
-    <delete id="deleteBrandByBrandIds" parameterType="String">
-        delete from pms_brand where brand_id in 
+    <update id="deleteBrandByBrandIds" parameterType="String">
+        update pms_brand set is_delete = 0 where brand_id in
         <foreach item="brandId" collection="array" open="(" separator="," close=")">
             #{brandId}
         </foreach>
-    </delete>
+    </update>
 </mapper>

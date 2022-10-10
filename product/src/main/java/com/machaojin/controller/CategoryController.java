@@ -1,5 +1,6 @@
 package com.machaojin.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
@@ -46,7 +47,9 @@ public class CategoryController extends BaseController
         List<Category> leval1Menus = categories
                 .stream()
                 //过滤出来所有的一级菜单
-                .filter(category -> category.getParentCid() == 0)
+                .filter((category) ->
+                    category.getParentCid() == 0 && category.getShowStatus() != 0
+                )
                 //找到所有一级菜单的的子菜单
                 .peek((menu) -> menu.setChildren(getChildrens(menu,categories)))
                 .sorted((menu1,menu2)-> {
@@ -70,7 +73,8 @@ public class CategoryController extends BaseController
     public List<Category> getChildrens(Category root,List<Category> all){
         List<Category> collect = all.stream()
                 .filter(category -> {
-                    return category.getParentCid().equals(root.getCatId());
+                    //逻辑删除这里做判断
+                    return category.getParentCid().equals(root.getCatId()) && category.getShowStatus() != 0;
                 })
                 //递归找到子菜单
                 .peek(category -> {
@@ -88,12 +92,15 @@ public class CategoryController extends BaseController
     /**
      * 查询商品三级分类列表
      */
-    @PreAuthorize("@ss.hasPermi('machaojin:category:list')")
+//    @PreAuthorize("@ss.hasPermi('machaojin:category:list')")
     @GetMapping("/list")
     public TableDataInfo list(Category category)
     {
         startPage();
         List<Category> list = categoryService.selectCategoryList(category);
+
+
+
         return getDataTable(list);
     }
 
@@ -123,12 +130,23 @@ public class CategoryController extends BaseController
     /**
      * 新增商品三级分类
      */
-    @PreAuthorize("@ss.hasPermi('machaojin:category:add')")
+//    @PreAuthorize("@ss.hasPermi('machaojin:category:add')")
     @Log(title = "商品三级分类", businessType = BusinessType.INSERT)
-    @PostMapping
+    @PostMapping("/add")
     public AjaxResult add(@RequestBody Category category)
     {
-        return toAjax(categoryService.insertCategory(category));
+
+        if (category.getCatId() == null){
+            //增加
+            return toAjax(categoryService.insertCategory(category));
+        }else{
+            //做修改
+            Category category1 = new Category();
+            category1.setCatId(category.getCatId());
+            category1.setName(category.getName());
+            return toAjax(categoryService.updateCategory(category1));
+        }
+
     }
 
     /**
@@ -145,11 +163,14 @@ public class CategoryController extends BaseController
     /**
      * 删除商品三级分类
      */
-    @PreAuthorize("@ss.hasPermi('machaojin:category:remove')")
+//    @PreAuthorize("@ss.hasPermi('machaojin:category:remove')")
     @Log(title = "商品三级分类", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{catIds}")
-    public AjaxResult remove(@PathVariable Long[] catIds)
+	@PostMapping("/delete")
+    public AjaxResult remove(@RequestBody Long[] catIds)
     {
+
+        logger.debug(Arrays.toString(catIds));
+        //逻辑删除分类选项，判断删除的分类是否被其他模块引用，如果发生引用就不能删除
         return toAjax(categoryService.deleteCategoryByCatIds(catIds));
     }
 }

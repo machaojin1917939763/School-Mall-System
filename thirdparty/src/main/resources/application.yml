@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    alicloud:
+      access-key: LTAI5tB3z4Pp32ihGgtDemZ5
+      secret-key: DQJTUDrbGya4EQk30CtHHh7U7AO9gZ
+      #地址
+      oss:
+        endpoint: https://oss-cn-hangzhou.aliyuncs.com
+        #bucket名字，自定义
+        bucket: machaojin-gulimall
+

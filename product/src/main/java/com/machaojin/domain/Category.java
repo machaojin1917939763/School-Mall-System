@@ -1,5 +1,7 @@
 package com.machaojin.domain;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
@@ -15,6 +17,7 @@ import java.util.List;
  * @date 2022-10-05
  */
 @Alias("Category")
+@TableName("pms_category")
 public class Category extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -36,6 +39,7 @@ public class Category extends BaseEntity
 
     /** 是否显示[0-不显示，1显示] */
     @Excel(name = "是否显示[0-不显示，1显示]")
+    @TableLogic(delval = "1",value = "0")
     private Integer showStatus;
 
     /** 排序 */

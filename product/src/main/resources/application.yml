@@ -7,9 +7,31 @@ spring:
       username: root
       password: machaojin
       driver-class-name: com.mysql.cj.jdbc.Driver
+      #配置阿里的OSS云存储key
+  cloud:
+    alicloud:
+      access-key: LTAI5tB3z4Pp32ihGgtDemZ5
+      secret-key: DQJTUDrbGya4EQk30CtHHh7U7AO9gZ
+      #地址
+      oss:
+        endpoint: https://oss-cn-hangzhou.aliyuncs.com
 
 
 
-mybatis:
+#原mybatis
+#mybatis:
+#  mapper-locations: classpath:mybatis/machaojin/*.xml
+#  type-aliases-package: com.machaojin.domain
+
+#升级到MyBatis Plus
+mybatis-plus:
   mapper-locations: classpath:mybatis/machaojin/*.xml
   type-aliases-package: com.machaojin.domain
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: 1
+      logic-not-delete-value: 0
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

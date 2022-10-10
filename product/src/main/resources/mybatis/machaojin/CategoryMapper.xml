@@ -31,6 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="icon != null  and icon != ''"> and icon = #{icon}</if>
             <if test="productUnit != null  and productUnit != ''"> and product_unit = #{productUnit}</if>
             <if test="productCount != null "> and product_count = #{productCount}</if>
+            <if test="true">and cat_level = 3 </if>
         </where>
     </select>
     
@@ -78,14 +79,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where cat_id = #{catId}
     </update>
 
-    <delete id="deleteCategoryByCatId" parameterType="Long">
-        delete from pms_category where cat_id = #{catId}
-    </delete>
+    <update id="deleteCategoryByCatId" parameterType="Long">
+        update pms_category set show_status = 0 where cat_id = #{catId}
+    </update>
 
-    <delete id="deleteCategoryByCatIds" parameterType="String">
-        delete from pms_category where cat_id in 
+    <update id="deleteCategoryByCatIds" parameterType="String">
+        update pms_category set show_status = 0 where cat_id in
         <foreach item="catId" collection="array" open="(" separator="," close=")">
             #{catId}
         </foreach>
-    </delete>
+    </update>
 </mapper>

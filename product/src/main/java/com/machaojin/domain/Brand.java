@@ -5,6 +5,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
 import org.apache.ibatis.type.Alias;
+import org.hibernate.validator.constraints.URL;
+
+import javax.validation.constraints.*;
 
 /**
  * 品牌对象 pms_brand
@@ -22,10 +25,13 @@ public class Brand extends BaseEntity
 
     /** 品牌名 */
     @Excel(name = "品牌名")
+    @NotBlank(message = "商品品牌名不合法")
     private String name;
 
     /** 品牌logo地址 */
     @Excel(name = "品牌logo地址")
+    @URL(message = "Logo地址不合法")
+    @NotNull
     private String logo;
 
     /** 介绍 */
@@ -38,10 +44,14 @@ public class Brand extends BaseEntity
 
     /** 检索首字母 */
     @Excel(name = "检索首字母")
+    @NotNull
+    @Pattern(regexp = "/^[a-zA-Z]$/",message = "检索首字母非法")
     private String firstLetter;
 
     /** 排序 */
     @Excel(name = "排序")
+    @NotNull
+    @Min(value = 0,message = "排序数字必须大于0")
     private Long sort;
 
     public void setBrandId(Long brandId) 
