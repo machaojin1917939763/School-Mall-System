@@ -1,11 +1,21 @@
 package com.machaojin.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.machaojin.domain.CategoryBrandRelation;
+import com.machaojin.exception.DataDeleteException;
+import com.machaojin.mapper.CategoryBrandRelationMapper;
+import com.ruoyi.common.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.machaojin.mapper.CategoryMapper;
 import com.machaojin.domain.Category;
 import com.machaojin.service.ICategoryService;
+
 
 /**
  * 商品三级分类Service业务层处理
@@ -13,11 +23,15 @@ import com.machaojin.service.ICategoryService;
  * @author machaojin
  * @date 2022-10-05
  */
+@Slf4j
 @Service
 public class CategoryServiceImpl implements ICategoryService 
 {
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    private CategoryBrandRelationMapper categoryBrandRelationMapper;
 
     /**
      * 查询商品三级分类
@@ -48,6 +62,7 @@ public class CategoryServiceImpl implements ICategoryService
      * 
      * @param category 商品三级分类
      * @return 结果
+     *
      */
     @Override
     public int insertCategory(Category category)
@@ -64,6 +79,14 @@ public class CategoryServiceImpl implements ICategoryService
     @Override
     public int updateCategory(Category category)
     {
+
+        if (StringUtils.isNotEmpty(category.getName())){
+            CategoryBrandRelation categoryBrandRelation = new CategoryBrandRelation();
+            LambdaQueryWrapper<CategoryBrandRelation> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.eq(CategoryBrandRelation::getCatelogId,category.getCatId());
+            categoryBrandRelationMapper.update(categoryBrandRelation,lambdaQueryWrapper);
+        }
+
         return categoryMapper.updateCategory(category);
     }
 
@@ -77,10 +100,18 @@ public class CategoryServiceImpl implements ICategoryService
     public int deleteCategoryByCatIds(Long[] catIds)
     {
 
-
+        List<Long> longList = new ArrayList<>();
+        Arrays.stream(catIds).forEach((a)->{
+            if (categoryBrandRelationMapper.selectList(new LambdaQueryWrapper<CategoryBrandRelation>().eq(CategoryBrandRelation::getCatelogId,a)) != null){
+                longList.add(a);
+            }
+        });
+        if (longList.size() == 0){
+            throw new DataDeleteException("没有数据可以删除");
+        }
 
         //TODO 逻辑删除分类选项，判断删除的分类是否被其他模块引用，如果发生引用就不能删除
-        return categoryMapper.deleteCategoryByCatIds(catIds);
+        return categoryMapper.deleteCategoryByCatIds(longList.toArray(new Long[0]));
     }
 
     /**
@@ -92,6 +123,9 @@ public class CategoryServiceImpl implements ICategoryService
     @Override
     public int deleteCategoryByCatId(Long catId)
     {
+        if (categoryBrandRelationMapper.selectList(new LambdaQueryWrapper<CategoryBrandRelation>().eq(CategoryBrandRelation::getCatelogId,catId)) != null){
+            throw new DataDeleteException("数据删除失败，关联表中还有数据");
+        }
         return categoryMapper.deleteCategoryByCatId(catId);
     }
 }

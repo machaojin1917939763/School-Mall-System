@@ -1,10 +1,14 @@
 package com.machaojin.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
 import org.apache.ibatis.type.Alias;
+
+import java.util.List;
 
 /**
  * 属性分组对象 pms_attr_group
@@ -13,7 +17,8 @@ import org.apache.ibatis.type.Alias;
  * @date 2022-10-05
  */
 @Alias("AttrGroup")
-public class AttrGroup extends BaseEntity
+@TableName("pms_attr_group")
+public class AttrGroup
 {
     private static final long serialVersionUID = 1L;
 
@@ -40,7 +45,19 @@ public class AttrGroup extends BaseEntity
     @Excel(name = "所属分类id")
     private Long catelogId;
 
-    public void setAttrGroupId(Long attrGroupId) 
+    @Excel(name = "所属分类id的所有路径")
+    @TableField(exist = false)
+    private List<Long> catelogPath;
+
+    public List<Long> getCatelogPath() {
+        return catelogPath;
+    }
+
+    public void setCatelogPath(List<Long> catelogPath) {
+        this.catelogPath = catelogPath;
+    }
+
+    public void setAttrGroupId(Long attrGroupId)
     {
         this.attrGroupId = attrGroupId;
     }

@@ -1,7 +1,14 @@
 package com.machaojin.service;
 
 import java.util.List;
+import java.util.Map;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.machaojin.domain.Attr;
 import com.machaojin.domain.AttrGroup;
+import com.machaojin.domain.Category;
+import com.machaojin.vo.AttrRelationVo;
 
 /**
  * 属性分组Service接口
@@ -10,7 +17,7 @@ import com.machaojin.domain.AttrGroup;
  * @date 2022-10-05
  */
 
-public interface IAttrGroupService 
+public interface IAttrGroupService extends IService<AttrGroup>
 {
     /**
      * 查询属性分组
@@ -59,4 +66,34 @@ public interface IAttrGroupService
      * @return 结果
      */
     public int deleteAttrGroupByAttrGroupId(Long attrGroupId);
+
+    /**
+     * 查询属性分组列表
+     * @param params {
+     *    page: 1,//当前页码
+     *    limit: 10,//每页记录数
+     *    sidx: 'id',//排序字段
+     *    order: 'asc/desc',//排序方式
+     *    key: '华为'//检索关键字
+     * }
+     * @param  catalogId id
+     * @return 属性分组集合
+     */
+    Page<AttrGroup> selectAttrGroupListForList(Map<String, Object> params, String catalogId);
+
+    /**
+     * 根据条件删除属性和属性分组的关系
+     * @param attrGroupIds
+     * @return
+     */
+    int deleteFor(AttrRelationVo[] attrGroupIds);
+
+    /**
+     * 获取没有被属性分组所关联的属性关系
+     * @param attrGroupId
+     * @param params
+     * @return
+     */
+    List<Attr> listFor(String attrGroupId, Map<String, String> params);
+
 }

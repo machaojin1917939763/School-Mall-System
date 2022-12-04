@@ -1,10 +1,15 @@
-package com.machaojin.vo;/**
+package com.machaojin.vo;
+
+import lombok.Data;
+
+/**
  * @author machaojin
- * @time 2022/11/25 20:08 星期五
  * @version 1.0
+ * @time 2022/11/25 20:08 星期五
  */
+@Data
 public class AttrRelationVo {
-    public static void main(String[] args) {
-        AttrRelationVo machaojin = new AttrRelationVo();
-    }
+    private String attrId;
+    private String attrGroupId;
+
 }

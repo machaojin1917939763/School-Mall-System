@@ -2,6 +2,7 @@ package com.machaojin.domain;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
@@ -58,7 +59,12 @@ public class Category extends BaseEntity
     @Excel(name = "商品数量")
     private Long productCount;
 
+    /**
+     * 该分类的子分类
+     * JsonInclude(JsonInclude.Include.NON_EMPTY):不为空就返回，为空的时候在返回数据的时候就不带上他
+     */
     @Excel(name = "该分类的子分类")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Category> children;
 
     public void setCatId(Long catId) 

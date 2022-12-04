@@ -14,10 +14,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="enable"    column="enable"    />
         <result property="catelogId"    column="catelog_id"    />
         <result property="showDesc"    column="show_desc"    />
+        <result property="valueType"    column="value_type"    />
     </resultMap>
 
     <sql id="selectAttrVo">
-        select attr_id, attr_name, search_type, icon, value_select, attr_type, enable, catelog_id, show_desc from pms_attr
+        select attr_id, attr_name, search_type, icon, value_select, attr_type, enable, catelog_id, show_desc,value_type from pms_attr
     </sql>
 
     <select id="selectAttrList" parameterType="Attr" resultMap="AttrResult">
@@ -31,6 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="enable != null "> and enable = #{enable}</if>
             <if test="catelogId != null "> and catelog_id = #{catelogId}</if>
             <if test="showDesc != null "> and show_desc = #{showDesc}</if>
+            <if test="valueType != null "> and value_type = #{valueType}</if>
         </where>
     </select>
     
@@ -50,6 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="enable != null">enable,</if>
             <if test="catelogId != null">catelog_id,</if>
             <if test="showDesc != null">show_desc,</if>
+            <if test="valueType != null">value_type</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="attrName != null">#{attrName},</if>
@@ -60,6 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="enable != null">#{enable},</if>
             <if test="catelogId != null">#{catelogId},</if>
             <if test="showDesc != null">#{showDesc},</if>
+            <if test="valueType != null">#{valueType},</if>
          </trim>
     </insert>
 
@@ -74,6 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="enable != null">enable = #{enable},</if>
             <if test="catelogId != null">catelog_id = #{catelogId},</if>
             <if test="showDesc != null">show_desc = #{showDesc},</if>
+            <if test="valueType != null">show_desc = #{valueType},</if>
         </trim>
         where attr_id = #{attrId}
     </update>

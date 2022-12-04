@@ -1,10 +1,15 @@
-package com.machaojin.exception;/**
+package com.machaojin.exception;
+
+/**
  * @author machaojin
- * @time 2022/11/21 16:14 星期一
  * @version 1.0
+ * @time 2022/11/21 16:14 星期一
+ * 数据删除异常
  */
-public class DataDeleteException {
-    public static void main(String[] args) {
-        DataDeleteException machaojin = new DataDeleteException();
+public class DataDeleteException extends RuntimeException{
+
+    public DataDeleteException(String message) {
+        super(message);
+
     }
 }

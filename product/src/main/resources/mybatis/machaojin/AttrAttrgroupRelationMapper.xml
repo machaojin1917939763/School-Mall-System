@@ -63,4 +63,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <delete id="deleteFor">
+        delete from pms_attr_attrgroup_relation where
+        <foreach collection="collect" item="item" separator=" OR ">
+            (attr_id = #{item.attrId} and attr_group_id = #{item.attrGroupId})
+        </foreach>
+    </delete>
+
 </mapper>

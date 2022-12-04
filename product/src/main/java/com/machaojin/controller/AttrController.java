@@ -1,17 +1,15 @@
 package com.machaojin.controller;
 
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.machaojin.vo.AttrReqVo;
+import com.machaojin.vo.AttrVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.machaojin.domain.Attr;
@@ -36,14 +34,29 @@ public class AttrController extends BaseController
 
     /**
      * 查询商品属性列表
+     * http://localhost:8087/api/product/machaojin/attr/base/list/0?t=1669022028620&page=1&limit=10&key=
+     * http://localhost:8087/api/product/machaojin/attr/sale/list/0?t=1669366285407&page=1&limit=10&key=
+     * t:1669290245940
+     * page:1
+     * limit:10
+     * key:
      */
     @PreAuthorize("@ss.hasPermi('machaojin:attr:list')")
-    @GetMapping("/list")
-    public TableDataInfo list(Attr attr)
+    @GetMapping("/list/{id}")
+    public AjaxResult list(@PathVariable String id)
     {
         startPage();
-        List<Attr> list = attrService.selectAttrList(attr);
-        return getDataTable(list);
+        AttrReqVo attr = attrService.selectAttrByAttrId(Long.valueOf(id));
+        return AjaxResult.success(attr);
+    }
+
+    @PreAuthorize("@ss.hasPermi('machaojin:attr:list')")
+    @GetMapping("/{type}/list/{id}")
+    public AjaxResult list(@PathVariable String id, @RequestParam Map<String,String> params, @PathVariable String type)
+    {
+        Page<Attr> page = new Page<Attr>(Long.parseLong(params.get("page")),Long.parseLong(params.get("limit")));
+
+        return AjaxResult.success(attrService.selectAttrList(page,params,id,type));
     }
 
     /**
@@ -63,7 +76,7 @@ public class AttrController extends BaseController
      * 获取商品属性详细信息
      */
     @PreAuthorize("@ss.hasPermi('machaojin:attr:query')")
-    @GetMapping(value = "/{attrId}")
+    @GetMapping(value = "/info/{attrId}")
     public AjaxResult getInfo(@PathVariable("attrId") Long attrId)
     {
         return AjaxResult.success(attrService.selectAttrByAttrId(attrId));
@@ -74,10 +87,10 @@ public class AttrController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:attr:add')")
     @Log(title = "商品属性", businessType = BusinessType.INSERT)
-    @PostMapping
-    public AjaxResult add(@RequestBody Attr attr)
+    @PostMapping("/save")
+    public AjaxResult add(@RequestBody AttrVo attr)
     {
-        return toAjax(attrService.insertAttr(attr));
+        return toAjax(attrService.insertAttrVo(attr));
     }
 
     /**
@@ -85,7 +98,7 @@ public class AttrController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:attr:edit')")
     @Log(title = "商品属性", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PostMapping("/update")
     public AjaxResult edit(@RequestBody Attr attr)
     {
         return toAjax(attrService.updateAttr(attr));
@@ -96,8 +109,18 @@ public class AttrController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:attr:remove')")
     @Log(title = "商品属性", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{attrIds}")
+	@DeleteMapping("/delete/{attrIds}")
     public AjaxResult remove(@PathVariable Long[] attrIds)
+    {
+        return toAjax(attrService.deleteAttrByAttrIds(attrIds));
+    }
+    /**
+     * 删除商品属性
+     */
+    @PreAuthorize("@ss.hasPermi('machaojin:attr:remove')")
+    @Log(title = "商品属性", businessType = BusinessType.DELETE)
+    @PostMapping("/delete")
+    public AjaxResult removeAll(@RequestBody Long[] attrIds)
     {
         return toAjax(attrService.deleteAttrByAttrIds(attrIds));
     }

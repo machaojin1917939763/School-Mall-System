@@ -1,7 +1,13 @@
 package com.machaojin.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.LongAdder;
 import javax.servlet.http.HttpServletResponse;
+
+
+import com.machaojin.service.IBrandService;
+import com.machaojin.service.ICategoryService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +47,9 @@ public class CategoryBrandRelationController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(CategoryBrandRelation categoryBrandRelation)
     {
+        //截取分页查询的条件
         startPage();
+        //查询所有的品牌和分类之间的关系
         List<CategoryBrandRelation> list = categoryBrandRelationService.selectCategoryBrandRelationList(categoryBrandRelation);
         return getDataTable(list);
     }
@@ -74,9 +82,10 @@ public class CategoryBrandRelationController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:relation:add')")
     @Log(title = "品牌分类关联", businessType = BusinessType.INSERT)
-    @PostMapping
+    @PostMapping("/add")
     public AjaxResult add(@RequestBody CategoryBrandRelation categoryBrandRelation)
     {
+        logger.info("{}",categoryBrandRelation);
         return toAjax(categoryBrandRelationService.insertCategoryBrandRelation(categoryBrandRelation));
     }
 
@@ -96,8 +105,8 @@ public class CategoryBrandRelationController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:relation:remove')")
     @Log(title = "品牌分类关联", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+	@PostMapping("/delete")
+    public AjaxResult remove(@RequestBody Long[] ids)
     {
         return toAjax(categoryBrandRelationService.deleteCategoryBrandRelationByIds(ids));
     }

@@ -1,7 +1,11 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.machaojin.domain.AttrAttrgroupRelation;
+import com.machaojin.vo.AttrRelationVo;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 属性&属性分组关联Mapper接口
@@ -10,7 +14,7 @@ import com.machaojin.domain.AttrAttrgroupRelation;
  * @date 2022-10-05
  */
 @org.apache.ibatis.annotations.Mapper
-public interface AttrAttrgroupRelationMapper 
+public interface AttrAttrgroupRelationMapper extends BaseMapper<AttrAttrgroupRelation>
 {
     /**
      * 查询属性&属性分组关联
@@ -59,4 +63,10 @@ public interface AttrAttrgroupRelationMapper
      * @return 结果
      */
     public int deleteAttrAttrgroupRelationByIds(Long[] ids);
+
+    /**
+     * 根据属性的分组信息删除属性关系表里面的数据
+     * @return
+     */
+    int deleteFor(@Param("collect") List<AttrRelationVo> collect);
 }

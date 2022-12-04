@@ -22,17 +22,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectCategoryList" parameterType="Category" resultMap="CategoryResult">
         <include refid="selectCategoryVo"/>
-        <where>  
-            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
-            <if test="parentCid != null "> and parent_cid = #{parentCid}</if>
-            <if test="catLevel != null "> and cat_level = #{catLevel}</if>
-            <if test="showStatus != null "> and show_status = #{showStatus}</if>
-            <if test="sort != null "> and sort = #{sort}</if>
-            <if test="icon != null  and icon != ''"> and icon = #{icon}</if>
-            <if test="productUnit != null  and productUnit != ''"> and product_unit = #{productUnit}</if>
-            <if test="productCount != null "> and product_count = #{productCount}</if>
-            <if test="true">and cat_level = 3 </if>
-        </where>
+<!--        <where>  -->
+<!--            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>-->
+<!--            <if test="parentCid != null "> and parent_cid = #{parentCid}</if>-->
+<!--            <if test="catLevel != null "> and cat_level = #{catLevel}</if>-->
+<!--            <if test="showStatus != null "> and show_status = #{showStatus}</if>-->
+<!--            <if test="sort != null "> and sort = #{sort}</if>-->
+<!--            <if test="icon != null  and icon != ''"> and icon = #{icon}</if>-->
+<!--            <if test="productUnit != null  and productUnit != ''"> and product_unit = #{productUnit}</if>-->
+<!--            <if test="productCount != null "> and product_count = #{productCount}</if>-->
+<!--            <if test="true">and cat_level = 3 </if>-->
+<!--        </where>-->
     </select>
     
     <select id="selectCategoryByCatId" parameterType="Long" resultMap="CategoryResult">

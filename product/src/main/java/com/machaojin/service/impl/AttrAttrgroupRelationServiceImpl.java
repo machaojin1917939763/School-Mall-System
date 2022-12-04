@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import com.machaojin.mapper.AttrAttrgroupRelationMapper;
 import com.machaojin.domain.AttrAttrgroupRelation;
 import com.machaojin.service.IAttrAttrgroupRelationService;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 属性&属性分组关联Service业务层处理
@@ -13,8 +16,9 @@ import com.machaojin.service.IAttrAttrgroupRelationService;
  * @author machaojin
  * @date 2022-10-05
  */
+
 @Service
-public class AttrAttrgroupRelationServiceImpl implements IAttrAttrgroupRelationService 
+public class AttrAttrgroupRelationServiceImpl implements IAttrAttrgroupRelationService
 {
     @Autowired
     private AttrAttrgroupRelationMapper attrAttrgroupRelationMapper;

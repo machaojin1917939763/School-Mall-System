@@ -1,6 +1,11 @@
 package com.machaojin.service.impl;
 
 import java.util.List;
+
+import com.machaojin.domain.Brand;
+import com.machaojin.domain.Category;
+import com.machaojin.mapper.BrandMapper;
+import com.machaojin.mapper.CategoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.machaojin.mapper.CategoryBrandRelationMapper;
@@ -18,6 +23,12 @@ public class CategoryBrandRelationServiceImpl implements ICategoryBrandRelationS
 {
     @Autowired
     private CategoryBrandRelationMapper categoryBrandRelationMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
+
+    @Autowired
+    private BrandMapper brandMapper;
 
     /**
      * 查询品牌分类关联
@@ -52,6 +63,11 @@ public class CategoryBrandRelationServiceImpl implements ICategoryBrandRelationS
     @Override
     public int insertCategoryBrandRelation(CategoryBrandRelation categoryBrandRelation)
     {
+        //先在category里面查询出
+        Category category = categoryMapper.selectCategoryByCatId(categoryBrandRelation.getCatelogId());
+        Brand brand = brandMapper.selectBrandByBrandId(categoryBrandRelation.getBrandId());
+        categoryBrandRelation.setBrandName(brand.getName());
+        categoryBrandRelation.setCatelogName(category.getName());
         return categoryBrandRelationMapper.insertCategoryBrandRelation(categoryBrandRelation);
     }
 

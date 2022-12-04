@@ -1,4 +1,4 @@
-package com.machaojin;
+package com.machaojin.exception;
 
 /**
  * @author machaojin
@@ -12,7 +12,9 @@ public enum BaseCode {
     /**
      *
      */
-    UNKNOWN_EXCEPTION(1000,"系统未知错误");
+    UNKNOWN_EXCEPTION(1000,"系统未知错误"),
+
+    DATA_DELETE_EXCEPTION(1002,"删除数据失败");
 
     private int code;
 

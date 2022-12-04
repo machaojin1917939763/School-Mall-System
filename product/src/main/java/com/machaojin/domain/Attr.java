@@ -1,5 +1,8 @@
 package com.machaojin.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
@@ -13,11 +16,14 @@ import org.apache.ibatis.type.Alias;
  * @date 2022-10-05
  */
 @Alias("Attr")
-public class Attr extends BaseEntity
+@TableName("pms_attr")
+public class Attr
 {
     private static final long serialVersionUID = 1L;
 
+
     /** 属性id */
+    @TableId(type = IdType.AUTO)
     private Long attrId;
 
     /** 属性名 */
@@ -52,7 +58,19 @@ public class Attr extends BaseEntity
     @Excel(name = "快速展示【是否展示在介绍上；0-否 1-是】，在sku中仍然可以调整")
     private Integer showDesc;
 
-    public void setAttrId(Long attrId) 
+    /** 值类型 */
+    @Excel(name = "值类型")
+    private String valueType;
+
+    public String getValueType() {
+        return valueType;
+    }
+
+    public void setValueType(String valueType) {
+        this.valueType = valueType;
+    }
+
+    public void setAttrId(Long attrId)
     {
         this.attrId = attrId;
     }

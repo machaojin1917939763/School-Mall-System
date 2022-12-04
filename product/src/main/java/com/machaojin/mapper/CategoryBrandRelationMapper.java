@@ -1,6 +1,8 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.machaojin.domain.CategoryBrandRelation;
 
 /**
@@ -10,7 +12,7 @@ import com.machaojin.domain.CategoryBrandRelation;
  * @date 2022-10-05
  */
 @org.apache.ibatis.annotations.Mapper
-public interface CategoryBrandRelationMapper 
+public interface CategoryBrandRelationMapper extends BaseMapper<CategoryBrandRelation>
 {
     /**
      * 查询品牌分类关联

@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
  * @author machaojin
  * @date 2022-10-05
  */
+@Slf4j
 @RestController
 @RequestMapping("/machaojin/category")
 public class CategoryController extends BaseController
@@ -44,23 +47,21 @@ public class CategoryController extends BaseController
         List<Category> categories = categoryService.selectCategoryList(null);
         //组成树形结构
         //找出所有的一级分类以及找到所有的子菜单
-        List<Category> leval1Menus = categories
+        List<Category> collect = categories
                 .stream()
                 //过滤出来所有的一级菜单
                 .filter((category) ->
-                    category.getParentCid() == 0 && category.getShowStatus() != 0
+                        category.getParentCid() == 0 && category.getShowStatus() == 1
                 )
+                .peek((menu)->{menu.setChildren(getChildrens(menu,categories));})
                 //找到所有一级菜单的的子菜单
-                .peek((menu) -> menu.setChildren(getChildrens(menu,categories)))
-                .sorted((menu1,menu2)-> {
+                .sorted((menu1, menu2) -> {
                     //getSort可能是空的会爆异常
                     return (int) ((int) (menu1.getSort() == null ? 0 : menu1.getSort()) - (menu2.getSort() == null ? 0 : menu2.getSort()));
                 })
                 //变成一个集合
                 .collect(Collectors.toList());
-        //
-
-        return leval1Menus;
+        return collect;
     }
 
 
@@ -81,7 +82,7 @@ public class CategoryController extends BaseController
                     category.setChildren(getChildrens(category, all));
                 })
                 //排序
-                .sorted((menu1,menu2)->{
+                .sorted((menu1, menu2) -> {
                     //getSort可能是空的会爆异常
                     return (int) ((int) (menu1.getSort() == null ? 0 : menu1.getSort()) - (menu2.getSort() == null ? 0 : menu2.getSort()));
                 })
@@ -121,7 +122,7 @@ public class CategoryController extends BaseController
      * 获取商品三级分类详细信息
      */
     @PreAuthorize("@ss.hasPermi('machaojin:category:query')")
-    @GetMapping(value = "/{catId}")
+    @GetMapping(value = "/info/{catId}")
     public AjaxResult getInfo(@PathVariable("catId") Long catId)
     {
         return AjaxResult.success(categoryService.selectCategoryByCatId(catId));

@@ -1,6 +1,8 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.machaojin.domain.Attr;
 
 /**
@@ -10,8 +12,7 @@ import com.machaojin.domain.Attr;
  * @date 2022-10-05
  */
 @org.apache.ibatis.annotations.Mapper
-public interface AttrMapper 
-{
+public interface AttrMapper extends BaseMapper<Attr> {
     /**
      * 查询商品属性
      * 

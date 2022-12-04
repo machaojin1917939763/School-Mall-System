@@ -6,10 +6,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.machaojin.valid.AddGroups;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -80,25 +82,26 @@ public class BrandController extends BaseController
      * 新增品牌
      * Valid: 告诉SpringMVC这个字段需要被校验
      * BindingResult:得到数据校验的结果
+     * Validated(value = {AddGroups.class}):对数据校验进行分组
      */
 //    @PreAuthorize("@ss.hasPermi('machaojin:brand:add')")
     @Log(title = "品牌", businessType = BusinessType.INSERT)
     @PostMapping("/add")
-    public AjaxResult add(@Valid @RequestBody Brand brand,BindingResult result)
+    public AjaxResult add(@Validated(value = {AddGroups.class}) @RequestBody Brand brand/*,BindingResult result*/)
     {
-        //定义Map用于存储错误
-        Map<String,String> map = new HashMap<>();
-        //如果发生错误
-        if (result.hasErrors()){
-            List<ObjectError> allErrors = result.getAllErrors();
-            allErrors.forEach((error) -> {
-                map.put(error.getObjectName(),error.getDefaultMessage());
-            });
-            return new AjaxResult(400,"数据校验错误",map);
-        }else{
-            return toAjax(brandService.insertBrand(brand));
-        }
-
+//        //定义Map用于存储错误
+//        Map<String,String> map = new HashMap<>();
+//        //如果发生错误
+//        if (result.hasErrors()){
+//            List<ObjectError> allErrors = result.getAllErrors();
+//            allErrors.forEach((error) -> {
+//                map.put(error.getObjectName(),error.getDefaultMessage());
+//            });
+//            return new AjaxResult(400,"数据校验错误",map);
+//        }else{
+//            return toAjax(brandService.insertBrand(brand));
+//        }
+        return toAjax(brandService.insertBrand(brand));
     }
 
     /**
@@ -117,7 +120,7 @@ public class BrandController extends BaseController
     /**
      * 删除品牌
      */
-//    @PreAuthorize("@ss.hasPermi('machaojin:brand:remove')")
+    @PreAuthorize("@ss.hasPermi('machaojin:brand:remove')")
     @Log(title = "品牌", businessType = BusinessType.DELETE)
 	@PostMapping("/delete")
     public AjaxResult remove(@RequestBody Long[] brandIds)

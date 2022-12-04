@@ -1,7 +1,12 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+import java.util.Map;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.machaojin.domain.AttrGroup;
+import com.machaojin.vo.AttrRelationVo;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 属性分组Mapper接口
@@ -10,7 +15,7 @@ import com.machaojin.domain.AttrGroup;
  * @date 2022-10-05
  */
 @org.apache.ibatis.annotations.Mapper
-public interface AttrGroupMapper 
+public interface AttrGroupMapper extends BaseMapper<AttrGroup>
 {
     /**
      * 查询属性分组
@@ -59,4 +64,14 @@ public interface AttrGroupMapper
      * @return 结果
      */
     public int deleteAttrGroupByAttrGroupIds(Long[] attrGroupIds);
+
+    /**
+     * 根据条件查询属性分组
+     * @param params 条件
+     * @param catalogId 分组id
+     * @return 属性分组
+     */
+    List<AttrGroup> selectAttrGroupListForList(Map<String, Object> params, @Param("id") String catalogId);
+
+
 }
