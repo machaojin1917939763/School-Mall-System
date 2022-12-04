@@ -135,7 +135,10 @@
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-jdbc:2.5.3" level="project" />
     <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:4.0.3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:5.3.9" level="project" />
+<<<<<<< HEAD
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.18.24" level="project" />
+=======
+>>>>>>> 0f3cb530c925597299a893d8e1d3f39eca58b2b0
     <orderEntry type="library" scope="TEST" name="Maven: org.testng:testng:7.6.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.google.code.findbugs:jsr305:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.36" level="project" />
