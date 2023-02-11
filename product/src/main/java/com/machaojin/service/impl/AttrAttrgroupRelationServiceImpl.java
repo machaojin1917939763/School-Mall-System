@@ -54,7 +54,7 @@ public class AttrAttrgroupRelationServiceImpl implements IAttrAttrgroupRelationS
      * @return 结果
      */
     @Override
-    public int insertAttrAttrgroupRelation(AttrAttrgroupRelation attrAttrgroupRelation)
+    public int insertAttrAttrgroupRelation(List<AttrAttrgroupRelation> attrAttrgroupRelation)
     {
         return attrAttrgroupRelationMapper.insertAttrAttrgroupRelation(attrAttrgroupRelation);
     }

@@ -5,9 +5,10 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: 101.42.149.76:8848
+        server-addr: localhost:8848
+        namespace: e5d17bcd-220d-4a70-9582-5a9f6067eb39
+        file-extension: yaml
       discovery:
-        server-addr: 101.42.149.76:8848
-#        namespace: 9e0a4db5-ae89-4846-a296-df1ad3be146b
+        server-addr: localhost:8848
 server:
-  port: 8087
+  port: 88

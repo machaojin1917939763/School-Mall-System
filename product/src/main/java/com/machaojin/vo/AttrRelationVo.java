@@ -12,4 +12,12 @@ public class AttrRelationVo {
     private String attrId;
     private String attrGroupId;
 
+    public AttrRelationVo(String attrId, String attrGroupId) {
+        this.attrId = attrId;
+        this.attrGroupId = attrGroupId;
+    }
+
+    public AttrRelationVo() {
+    }
+
 }

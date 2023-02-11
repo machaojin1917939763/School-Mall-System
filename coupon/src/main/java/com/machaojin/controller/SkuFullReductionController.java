@@ -2,6 +2,8 @@ package com.machaojin.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.machaojin.dto.SkuReductionTo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +46,13 @@ public class SkuFullReductionController extends BaseController
         startPage();
         List<SkuFullReduction> list = skuFullReductionService.selectSkuFullReductionList(skuFullReduction);
         return getDataTable(list);
+    }
+
+    @PreAuthorize("@ss.hasPermi('machaojin:reduction:insert')")
+    @Log(title = "商品满减信息", businessType = BusinessType.INSERT)
+    @PostMapping("/save/info")
+    AjaxResult saveReduction(@RequestBody SkuReductionTo skuReductionTo){
+        return AjaxResult.success(skuFullReductionService.saveReductions(skuReductionTo));
     }
 
     /**

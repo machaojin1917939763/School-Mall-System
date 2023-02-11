@@ -1,6 +1,10 @@
 package com.machaojin.service.impl;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.machaojin.domain.SpuInfoDesc;
+import com.machaojin.mapper.SpuInfoDescMapper;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +19,7 @@ import com.machaojin.service.ISpuCommentService;
  * @date 2022-10-05
  */
 @Service
-public class SpuCommentServiceImpl implements ISpuCommentService 
+public class SpuCommentServiceImpl extends ServiceImpl<SpuCommentMapper, SpuComment> implements ISpuCommentService
 {
     @Autowired
     private SpuCommentMapper spuCommentMapper;

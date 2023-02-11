@@ -1,7 +1,10 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.machaojin.domain.SpuInfo;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * spu信息Mapper接口
@@ -10,8 +13,7 @@ import com.machaojin.domain.SpuInfo;
  * @date 2022-10-05
  */
 @org.apache.ibatis.annotations.Mapper
-public interface SpuInfoMapper 
-{
+public interface SpuInfoMapper extends BaseMapper<SpuInfo> {
     /**
      * 查询spu信息
      * 
@@ -24,9 +26,10 @@ public interface SpuInfoMapper
      * 查询spu信息列表
      * 
      * @param spuInfo spu信息
+     * @param key
      * @return spu信息集合
      */
-    public List<SpuInfo> selectSpuInfoList(SpuInfo spuInfo);
+    public List<SpuInfo> selectSpuInfoList(@Param("spuInfo") SpuInfo spuInfo, @Param("key") String key);
 
     /**
      * 新增spu信息

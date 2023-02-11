@@ -1,7 +1,10 @@
 package com.machaojin.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.machaojin.domain.SpuImages;
+import com.machaojin.domain.SpuInfoDesc;
 
 /**
  * spu图片Service接口
@@ -10,7 +13,7 @@ import com.machaojin.domain.SpuImages;
  * @date 2022-10-05
  */
 
-public interface ISpuImagesService 
+public interface ISpuImagesService extends IService<SpuImages>
 {
     /**
      * 查询spu图片

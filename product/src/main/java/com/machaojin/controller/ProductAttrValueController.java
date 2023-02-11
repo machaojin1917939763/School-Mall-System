@@ -28,7 +28,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
  * @date 2022-10-05
  */
 @RestController
-@RequestMapping("/machaojin/value.pro")
+@RequestMapping("/machaojin/product/attr/value")
 public class ProductAttrValueController extends BaseController
 {
     @Autowired
@@ -63,7 +63,7 @@ public class ProductAttrValueController extends BaseController
      * 获取spu属性值详细信息
      */
     @PreAuthorize("@ss.hasPermi('machaojin:value:query')")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/info/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         return AjaxResult.success(productAttrValueService.selectProductAttrValueById(id));
@@ -74,7 +74,7 @@ public class ProductAttrValueController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:value:add')")
     @Log(title = "spu属性值", businessType = BusinessType.INSERT)
-    @PostMapping
+    @PostMapping("/save")
     public AjaxResult add(@RequestBody ProductAttrValue productAttrValue)
     {
         return toAjax(productAttrValueService.insertProductAttrValue(productAttrValue));
@@ -85,10 +85,21 @@ public class ProductAttrValueController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:value:edit')")
     @Log(title = "spu属性值", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PostMapping("/update")
     public AjaxResult edit(@RequestBody ProductAttrValue productAttrValue)
     {
         return toAjax(productAttrValueService.updateProductAttrValue(productAttrValue));
+    }
+
+    /**
+     * 修改spu属性值
+     */
+    @PreAuthorize("@ss.hasPermi('machaojin:value:edit')")
+    @Log(title = "spu属性值", businessType = BusinessType.UPDATE)
+    @PostMapping("/update/{spuId}")
+    public AjaxResult editBySpuId(@RequestBody List<ProductAttrValue> productAttrValues, @PathVariable Integer spuId)
+    {
+        return toAjax(productAttrValueService.updateProductAttrValues(productAttrValues,spuId));
     }
 
     /**
@@ -96,8 +107,8 @@ public class ProductAttrValueController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:value:remove')")
     @Log(title = "spu属性值", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+	@PostMapping("/delete")
+    public AjaxResult remove(@RequestBody Long[] ids)
     {
         return toAjax(productAttrValueService.deleteProductAttrValueByIds(ids));
     }

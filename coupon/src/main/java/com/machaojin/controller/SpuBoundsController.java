@@ -2,6 +2,9 @@ package com.machaojin.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.machaojin.dto.SpuBoundsDto;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,10 +77,12 @@ public class SpuBoundsController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:bounds:add')")
     @Log(title = "商品spu积分设置", businessType = BusinessType.INSERT)
-    @PostMapping
-    public AjaxResult add(@RequestBody SpuBounds spuBounds)
+    @PostMapping("/save")
+    public AjaxResult add(@RequestBody SpuBoundsDto spuBounds)
     {
-        return toAjax(spuBoundsService.insertSpuBounds(spuBounds));
+        SpuBounds bounds = new SpuBounds();
+        BeanUtils.copyProperties(spuBounds,bounds);
+        return toAjax(spuBoundsService.insertSpuBounds(bounds));
     }
 
     /**

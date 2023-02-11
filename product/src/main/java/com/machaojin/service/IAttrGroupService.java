@@ -94,6 +94,12 @@ public interface IAttrGroupService extends IService<AttrGroup>
      * @param params
      * @return
      */
-    List<Attr> listFor(String attrGroupId, Map<String, String> params);
+    List<Attr> listFor(String attrGroupId, Map<Object, Object> params);
 
+    /**
+     * 根据分类id查询出所有的分组信息，然后再查出每个分组信息关联的所有属性
+     * @param categoryId
+     * @return
+     */
+    List<AttrGroup> listAllAttr(Long categoryId);
 }

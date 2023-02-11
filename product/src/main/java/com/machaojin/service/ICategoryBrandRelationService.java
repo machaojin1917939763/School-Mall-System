@@ -1,6 +1,9 @@
 package com.machaojin.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.machaojin.domain.Brand;
 import com.machaojin.domain.CategoryBrandRelation;
 
 /**
@@ -10,7 +13,7 @@ import com.machaojin.domain.CategoryBrandRelation;
  * @date 2022-10-05
  */
 
-public interface ICategoryBrandRelationService 
+public interface ICategoryBrandRelationService extends IService<CategoryBrandRelation>
 {
     /**
      * 查询品牌分类关联
@@ -59,4 +62,11 @@ public interface ICategoryBrandRelationService
      * @return 结果
      */
     public int deleteCategoryBrandRelationById(Long id);
+
+    /**
+     * 根据分类Id查询分类与品牌的关系
+     * @param categoryId
+     * @return
+     */
+    List<CategoryBrandRelation> selectCategoryBrandRelationByCategoryId(Long categoryId);
 }

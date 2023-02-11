@@ -1,21 +1,17 @@
 package com.machaojin.controller;
 
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.machaojin.domain.*;
+import com.machaojin.service.*;
+import com.machaojin.vo.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
-import com.machaojin.domain.SpuInfo;
-import com.machaojin.service.ISpuInfoService;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
@@ -23,12 +19,12 @@ import com.ruoyi.framework.web.page.TableDataInfo;
 
 /**
  * spu信息Controller
- * 
+ *
  * @author machaojin
  * @date 2022-10-05
  */
 @RestController
-@RequestMapping("/machaojin/info/one")
+@RequestMapping("/machaojin/spu/info")
 public class SpuInfoController extends BaseController
 {
     @Autowired
@@ -39,10 +35,13 @@ public class SpuInfoController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:info:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SpuInfo spuInfo)
+    public TableDataInfo list(SpuInfo spuInfo,@RequestParam(required = false) String key,@RequestParam(required = false) Integer status)
     {
         startPage();
-        List<SpuInfo> list = spuInfoService.selectSpuInfoList(spuInfo);
+        if (status != null){
+            spuInfo.setPublishStatus(status);
+        }
+        List<SpuInfo> list = spuInfoService.selectSpuInfoList(spuInfo,key);
         return getDataTable(list);
     }
 
@@ -54,7 +53,7 @@ public class SpuInfoController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, SpuInfo spuInfo)
     {
-        List<SpuInfo> list = spuInfoService.selectSpuInfoList(spuInfo);
+        List<SpuInfo> list = spuInfoService.selectSpuInfoList(spuInfo, null);
         ExcelUtil<SpuInfo> util = new ExcelUtil<SpuInfo>(SpuInfo.class);
         util.exportExcel(response, list, "spu信息数据");
     }
@@ -74,10 +73,10 @@ public class SpuInfoController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:info:add')")
     @Log(title = "spu信息", businessType = BusinessType.INSERT)
-    @PostMapping
-    public AjaxResult add(@RequestBody SpuInfo spuInfo)
+    @PostMapping("/save")
+    public AjaxResult add(@RequestBody SpuSaveVo spuSaveVo)
     {
-        return toAjax(spuInfoService.insertSpuInfo(spuInfo));
+        return toAjax(spuInfoService.saveProduct(spuSaveVo));
     }
 
     /**
@@ -88,6 +87,21 @@ public class SpuInfoController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody SpuInfo spuInfo)
     {
+        return toAjax(spuInfoService.updateSpuInfo(spuInfo));
+    }
+
+    /**
+     * 商品上架
+     */
+    @PreAuthorize("@ss.hasPermi('machaojin:info:edit')")
+    @Log(title = "spu信息", businessType = BusinessType.UPDATE)
+    @PostMapping("/{spuId}/up")
+    public AjaxResult up(@PathVariable Long spuId)
+    {
+        SpuInfo spuInfo = new SpuInfo();
+        spuInfo.setUpdateTime(new Date());
+        spuInfo.setPublishStatus(1);
+        spuInfo.setId(spuId);
         return toAjax(spuInfoService.updateSpuInfo(spuInfo));
     }
 

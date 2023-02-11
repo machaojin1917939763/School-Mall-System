@@ -35,6 +35,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="skuSubtitle != null  and skuSubtitle != ''"> and sku_subtitle = #{skuSubtitle}</if>
             <if test="price != null "> and price = #{price}</if>
             <if test="saleCount != null "> and sale_count = #{saleCount}</if>
+            <if test="min != null and max == null">and price &lt;= #{min}</if>
+            <if test="min == null and max != null">and price &gt;= #{max}</if>
+            <if test="min != null and max != null">and price &gt;= #{max} and price &lt;= #{min}</if>
         </where>
     </select>
     

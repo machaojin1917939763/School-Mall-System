@@ -2,8 +2,11 @@ package com.machaojin.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.machaojin.vo.AttrRelationVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -29,6 +32,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/machaojin/relation/attr")
+@Transactional(rollbackFor = Exception.class)
 public class AttrAttrgroupRelationController extends BaseController
 {
     @Autowired
@@ -74,10 +78,10 @@ public class AttrAttrgroupRelationController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:relation:add')")
     @Log(title = "属性&属性分组关联", businessType = BusinessType.INSERT)
-    @PostMapping
-    public AjaxResult add(@RequestBody AttrAttrgroupRelation attrAttrgroupRelation)
+    @PostMapping("/save")
+    public AjaxResult add(@RequestBody List<AttrAttrgroupRelation> attrAttrgroupRelations)
     {
-        return toAjax(attrAttrgroupRelationService.insertAttrAttrgroupRelation(attrAttrgroupRelation));
+        return toAjax(attrAttrgroupRelationService.insertAttrAttrgroupRelation(attrAttrgroupRelations));
     }
 
     /**

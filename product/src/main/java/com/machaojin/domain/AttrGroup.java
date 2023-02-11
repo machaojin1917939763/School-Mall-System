@@ -2,6 +2,7 @@ package com.machaojin.domain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.machaojin.vo.AttrVo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
@@ -48,6 +49,18 @@ public class AttrGroup
     @Excel(name = "所属分类id的所有路径")
     @TableField(exist = false)
     private List<Long> catelogPath;
+
+    @Excel(name = "分组下的所有基本属性")
+    @TableField(exist = false)
+    private List<AttrVo> attrs;
+
+    public List<AttrVo> getAttrs() {
+        return attrs;
+    }
+
+    public void setAttrs(List<AttrVo> attrs) {
+        this.attrs = attrs;
+    }
 
     public List<Long> getCatelogPath() {
         return catelogPath;

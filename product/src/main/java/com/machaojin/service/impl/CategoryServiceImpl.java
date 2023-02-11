@@ -5,9 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.machaojin.domain.CategoryBrandRelation;
+import com.machaojin.domain.SpuInfoDesc;
 import com.machaojin.exception.DataDeleteException;
 import com.machaojin.mapper.CategoryBrandRelationMapper;
+import com.machaojin.mapper.SpuInfoDescMapper;
 import com.ruoyi.common.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +28,7 @@ import com.machaojin.service.ICategoryService;
  */
 @Slf4j
 @Service
-public class CategoryServiceImpl implements ICategoryService 
+public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements ICategoryService
 {
     @Autowired
     private CategoryMapper categoryMapper;
@@ -79,14 +82,16 @@ public class CategoryServiceImpl implements ICategoryService
     @Override
     public int updateCategory(Category category)
     {
+           //修改关系表中的数据，根据category的id查询出来
+        List<CategoryBrandRelation> categoryBrandRelations = categoryBrandRelationMapper.selectList(new LambdaQueryWrapper<CategoryBrandRelation>().eq(CategoryBrandRelation::getCatelogId, category.getCatId()));
+        if (categoryBrandRelations != null && categoryBrandRelations.size() > 0){
+            categoryBrandRelations.forEach((relation) -> {
+                relation.setCatelogName(category.getName());
+                categoryBrandRelationMapper.updateById(relation);
+            });
 
-        if (StringUtils.isNotEmpty(category.getName())){
-            CategoryBrandRelation categoryBrandRelation = new CategoryBrandRelation();
-            LambdaQueryWrapper<CategoryBrandRelation> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-            lambdaQueryWrapper.eq(CategoryBrandRelation::getCatelogId,category.getCatId());
-            categoryBrandRelationMapper.update(categoryBrandRelation,lambdaQueryWrapper);
         }
-
+        log.error(category.toString());
         return categoryMapper.updateCategory(category);
     }
 

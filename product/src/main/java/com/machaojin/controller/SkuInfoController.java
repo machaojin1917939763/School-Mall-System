@@ -1,17 +1,13 @@
 package com.machaojin.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.machaojin.vo.SkuInfoVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.machaojin.domain.SkuInfo;
@@ -28,7 +24,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
  * @date 2022-10-05
  */
 @RestController
-@RequestMapping("/machaojin/info")
+@RequestMapping("/machaojin/sku/info")
 public class SkuInfoController extends BaseController
 {
     @Autowired
@@ -39,9 +35,15 @@ public class SkuInfoController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:info:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SkuInfo skuInfo)
+    public TableDataInfo list(SkuInfoVo skuInfo, @RequestParam(required = false) String key)
     {
         startPage();
+        logger.info(skuInfo.toString());
+        skuInfo.setCatalogId(skuInfo.getCatalogId() == 0 || skuInfo.getCatalogId() == null ? null : skuInfo.getCatalogId());
+        skuInfo.setBrandId(skuInfo.getBrandId() == 0 || skuInfo.getBrandId() == null ? null : skuInfo.getBrandId());
+        skuInfo.setSkuName(skuInfo.getSkuName() != null ? skuInfo.getSkuName() : key);
+        skuInfo.setMin(skuInfo.getMin() == 0 || skuInfo.getMin() ==  null? null : skuInfo.getMin());
+        skuInfo.setMax(skuInfo.getMax() == 0 || skuInfo.getMax() == null? null : skuInfo.getMax());
         List<SkuInfo> list = skuInfoService.selectSkuInfoList(skuInfo);
         return getDataTable(list);
     }
@@ -52,7 +54,7 @@ public class SkuInfoController extends BaseController
     @PreAuthorize("@ss.hasPermi('machaojin:info:export')")
     @Log(title = "sku信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, SkuInfo skuInfo)
+    public void export(HttpServletResponse response, SkuInfoVo skuInfo)
     {
         List<SkuInfo> list = skuInfoService.selectSkuInfoList(skuInfo);
         ExcelUtil<SkuInfo> util = new ExcelUtil<SkuInfo>(SkuInfo.class);

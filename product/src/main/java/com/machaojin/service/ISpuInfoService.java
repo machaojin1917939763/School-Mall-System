@@ -1,7 +1,10 @@
 package com.machaojin.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.machaojin.domain.SpuInfo;
+import com.machaojin.vo.SpuSaveVo;
 
 /**
  * spu信息Service接口
@@ -10,7 +13,7 @@ import com.machaojin.domain.SpuInfo;
  * @date 2022-10-05
  */
 
-public interface ISpuInfoService 
+public interface ISpuInfoService extends IService<SpuInfo>
 {
     /**
      * 查询spu信息
@@ -24,9 +27,10 @@ public interface ISpuInfoService
      * 查询spu信息列表
      * 
      * @param spuInfo spu信息
+     * @param key
      * @return spu信息集合
      */
-    public List<SpuInfo> selectSpuInfoList(SpuInfo spuInfo);
+    public List<SpuInfo> selectSpuInfoList(SpuInfo spuInfo, String key);
 
     /**
      * 新增spu信息
@@ -59,4 +63,11 @@ public interface ISpuInfoService
      * @return 结果
      */
     public int deleteSpuInfoById(Long id);
+
+    /**
+     * 保存商品信息
+     * @param spuSaveVo
+     * @return
+     */
+    int saveProduct(SpuSaveVo spuSaveVo);
 }

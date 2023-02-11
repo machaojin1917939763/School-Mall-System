@@ -5,9 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.machaojin.domain.CategoryBrandRelation;
+import com.machaojin.domain.SpuInfoDesc;
 import com.machaojin.exception.DataDeleteException;
 import com.machaojin.mapper.CategoryBrandRelationMapper;
+import com.machaojin.mapper.SpuInfoDescMapper;
 import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 
-public class BrandServiceImpl implements IBrandService 
+public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements IBrandService
 {
     @Autowired
     private BrandMapper brandMapper;
@@ -100,19 +103,24 @@ public class BrandServiceImpl implements IBrandService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteBrandByBrandIds(Long[] brandIds)
     {
-        List<Long> longList = new ArrayList<>();
+        List<Long> cateAndBrandIds = new ArrayList<>();
         Arrays.stream(brandIds).forEach((a)->{
-            //如果关系表里面没有数据，就直接删除
-            if (categoryBrandRelationMapper.selectList(new LambdaQueryWrapper<CategoryBrandRelation>().eq(CategoryBrandRelation::getBrandId,a)) == null){
-                longList.add(a);
+            //查询关系表中的品牌和商品的数据
+            List<CategoryBrandRelation> categoryBrandRelations = categoryBrandRelationMapper.selectList(new LambdaQueryWrapper<CategoryBrandRelation>().eq(CategoryBrandRelation::getBrandId, a));
+            if (categoryBrandRelations != null && categoryBrandRelations.size() != 0){
+                categoryBrandRelations.forEach((cateAndBrandId) -> {
+                    cateAndBrandIds.add(cateAndBrandId.getId());
+                });
             }
         });
-        if (longList.size() == 0){
-            throw new DataDeleteException("没有数据可以删除");
+        //如果关系表中没有数据，就可以直接删除
+        if (cateAndBrandIds.size() != 0){
+            categoryBrandRelationMapper.deleteCategoryBrandRelationByIds(cateAndBrandIds.toArray(new Long[]{}));
         }
-        return brandMapper.deleteBrandByBrandIds(longList.toArray(new Long[0]));
+        return brandMapper.deleteBrandByBrandIds(brandIds);
     }
 
     /**

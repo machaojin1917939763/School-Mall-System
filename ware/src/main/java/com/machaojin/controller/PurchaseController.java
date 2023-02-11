@@ -2,6 +2,8 @@ package com.machaojin.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.machaojin.MergeVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,6 +49,27 @@ public class PurchaseController extends BaseController
     }
 
     /**
+     * 合并采购需求到采购单上
+     */
+    @PreAuthorize("@ss.hasPermi('machaojin:purchase:update')")
+    @PostMapping("/merge")
+    public AjaxResult merge(@RequestBody  MergeVo mergeVo){
+        return AjaxResult.success(purchaseService.mergePurchase(mergeVo));
+    }
+
+    /**
+     * 查询未合并的采购信息列表
+     */
+    @PreAuthorize("@ss.hasPermi('machaojin:purchase:list')")
+    @GetMapping("/list/new")
+    public TableDataInfo listForStatus(Purchase purchase)
+    {
+        startPage();
+        List<Purchase> list = purchaseService.selectUnPurchaseList(purchase);
+        return getDataTable(list);
+    }
+
+    /**
      * 导出采购信息列表
      */
     @PreAuthorize("@ss.hasPermi('machaojin:purchase:export')")
@@ -63,7 +86,7 @@ public class PurchaseController extends BaseController
      * 获取采购信息详细信息
      */
     @PreAuthorize("@ss.hasPermi('machaojin:purchase:query')")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/info/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         return AjaxResult.success(purchaseService.selectPurchaseById(id));
@@ -74,7 +97,7 @@ public class PurchaseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:purchase:add')")
     @Log(title = "采购信息", businessType = BusinessType.INSERT)
-    @PostMapping
+    @PostMapping("/save")
     public AjaxResult add(@RequestBody Purchase purchase)
     {
         return toAjax(purchaseService.insertPurchase(purchase));
@@ -85,7 +108,7 @@ public class PurchaseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:purchase:edit')")
     @Log(title = "采购信息", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PostMapping("/update")
     public AjaxResult edit(@RequestBody Purchase purchase)
     {
         return toAjax(purchaseService.updatePurchase(purchase));
@@ -96,8 +119,8 @@ public class PurchaseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:purchase:remove')")
     @Log(title = "采购信息", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+	@PostMapping("/delete")
+    public AjaxResult remove(@RequestBody Long[] ids)
     {
         return toAjax(purchaseService.deletePurchaseByIds(ids));
     }

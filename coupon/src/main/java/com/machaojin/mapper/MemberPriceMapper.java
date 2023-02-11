@@ -1,6 +1,8 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.machaojin.domain.MemberPrice;
 
 /**
@@ -10,7 +12,7 @@ import com.machaojin.domain.MemberPrice;
  * @date 2022-10-05
  */
 @org.apache.ibatis.annotations.Mapper
-public interface MemberPriceMapper 
+public interface MemberPriceMapper extends BaseMapper<MemberPrice>
 {
     /**
      * 查询商品会员价格

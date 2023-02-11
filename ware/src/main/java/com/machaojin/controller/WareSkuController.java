@@ -28,7 +28,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
  * @date 2022-10-06
  */
 @RestController
-@RequestMapping("/machaojin/sku")
+@RequestMapping("/machaojin/ware/sku")
 public class WareSkuController extends BaseController
 {
     @Autowired
@@ -63,7 +63,7 @@ public class WareSkuController extends BaseController
      * 获取商品库存详细信息
      */
     @PreAuthorize("@ss.hasPermi('machaojin:sku:query')")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/info/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         return AjaxResult.success(wareSkuService.selectWareSkuById(id));
@@ -74,7 +74,7 @@ public class WareSkuController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:sku:add')")
     @Log(title = "商品库存", businessType = BusinessType.INSERT)
-    @PostMapping
+    @PostMapping("/save")
     public AjaxResult add(@RequestBody WareSku wareSku)
     {
         return toAjax(wareSkuService.insertWareSku(wareSku));
@@ -85,7 +85,7 @@ public class WareSkuController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:sku:edit')")
     @Log(title = "商品库存", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PostMapping("/update")
     public AjaxResult edit(@RequestBody WareSku wareSku)
     {
         return toAjax(wareSkuService.updateWareSku(wareSku));
@@ -96,8 +96,8 @@ public class WareSkuController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:sku:remove')")
     @Log(title = "商品库存", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+	@PostMapping("/delete")
+    public AjaxResult remove(@RequestBody Long[] ids)
     {
         return toAjax(wareSkuService.deleteWareSkuByIds(ids));
     }

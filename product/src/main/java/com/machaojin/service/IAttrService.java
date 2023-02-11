@@ -6,6 +6,7 @@ import java.util.Map;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.machaojin.domain.Attr;
+import com.machaojin.vo.AttrRelationVo;
 import com.machaojin.vo.AttrReqVo;
 import com.machaojin.vo.AttrVo;
 
@@ -48,7 +49,7 @@ public interface IAttrService extends IService<Attr>
      * @param attr 商品属性
      * @return 结果
      */
-    public int updateAttr(Attr attr);
+    public int updateAttr(AttrVo attr);
 
     /**
      * 批量删除商品属性

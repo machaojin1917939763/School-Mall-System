@@ -1,6 +1,16 @@
 package com.machaojin.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import com.machaojin.domain.SkuLadder;
+import com.machaojin.dto.MemberPrice;
+import com.machaojin.dto.SkuReductionTo;
+import com.machaojin.mapper.MemberPriceMapper;
+import com.machaojin.mapper.SkuLadderMapper;
+import com.machaojin.service.IMemberPriceService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.machaojin.mapper.SkuFullReductionMapper;
@@ -18,6 +28,12 @@ public class SkuFullReductionServiceImpl implements ISkuFullReductionService
 {
     @Autowired
     private SkuFullReductionMapper skuFullReductionMapper;
+
+    @Autowired
+    private SkuLadderMapper skuLadderMapper;
+
+    @Autowired
+    private IMemberPriceService memberPriceService;
 
     /**
      * 查询商品满减信息
@@ -89,5 +105,41 @@ public class SkuFullReductionServiceImpl implements ISkuFullReductionService
     public int deleteSkuFullReductionById(Long id)
     {
         return skuFullReductionMapper.deleteSkuFullReductionById(id);
+    }
+
+    @Override
+    public int saveReductions(SkuReductionTo skuReductionTo) {
+        //保存商品阶梯价格
+        SkuLadder skuLadder = new SkuLadder();
+        skuLadder.setSkuId(skuReductionTo.getSkuId());
+        skuLadder.setFullCount(Long.parseLong(skuReductionTo.getFullCount() + ""));
+        skuLadder.setDiscount(skuReductionTo.getDiscount());
+        skuLadder.setAddOther(skuReductionTo.getCountStatus());
+        if (skuReductionTo.getFullCount() > 0){
+            skuLadderMapper.insertSkuLadder(skuLadder);
+        }
+        //保存商品满减信息
+        SkuFullReduction skuFullReduction = new SkuFullReduction();
+        BeanUtils.copyProperties(skuReductionTo,skuFullReduction);
+        if (skuReductionTo.getFullPrice().compareTo(new BigDecimal("0")) > 0){
+            this.insertSkuFullReduction(skuFullReduction);
+        }
+        //保存商品阶梯价格
+        List<MemberPrice> memberPrice = skuReductionTo.getMemberPrice();
+        if (memberPrice != null && memberPrice.size() > 0){
+            List<com.machaojin.domain.MemberPrice> collect = memberPrice.stream().map((member) -> {
+                com.machaojin.domain.MemberPrice memberPrice1 = new com.machaojin.domain.MemberPrice();
+                memberPrice1.setSkuId(skuReductionTo.getSkuId());
+                memberPrice1.setMemberLevelId(member.getId());
+                memberPrice1.setMemberLevelName(member.getName());
+                memberPrice1.setMemberPrice(member.getPrice());
+                memberPrice1.setAddOther(1);
+                return memberPrice1;
+            }).filter((item) -> {
+               return item.getMemberPrice().compareTo(new BigDecimal("0")) > 0;
+            }).collect(Collectors.toList());
+            boolean b = memberPriceService.saveBatch(collect);
+        }
+        return 1;
     }
 }

@@ -1,6 +1,8 @@
 package com.machaojin.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.machaojin.domain.MemberPrice;
 
 /**
@@ -10,7 +12,7 @@ import com.machaojin.domain.MemberPrice;
  * @date 2022-10-05
  */
 
-public interface IMemberPriceService 
+public interface IMemberPriceService extends IService<MemberPrice>
 {
     /**
      * 查询商品会员价格

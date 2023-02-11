@@ -10,14 +10,7 @@ import com.machaojin.service.IBrandService;
 import com.machaojin.service.ICategoryService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.machaojin.domain.CategoryBrandRelation;
@@ -54,6 +47,19 @@ public class CategoryBrandRelationController extends BaseController
         return getDataTable(list);
     }
 
+    /**
+     * 查询品牌分类关联列表
+     */
+    @PreAuthorize("@ss.hasPermi('machaojin:relation:list')")
+    @GetMapping("/brand/list")
+    public TableDataInfo brandList(@RequestParam(value = "catId",required = true) Long categoryId)
+    {
+        //截取分页查询的条件
+        startPage();
+        //查询所有的品牌和分类之间的关系
+        List<CategoryBrandRelation> list = categoryBrandRelationService.selectCategoryBrandRelationByCategoryId(categoryId);
+        return getDataTable(list);
+    }
     /**
      * 导出品牌分类关联列表
      */

@@ -1,7 +1,10 @@
 package com.machaojin.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.machaojin.domain.Category;
+import com.machaojin.domain.CommentReplay;
 
 /**
  * 商品三级分类Service接口
@@ -10,7 +13,7 @@ import com.machaojin.domain.Category;
  * @date 2022-10-05
  */
 
-public interface ICategoryService 
+public interface ICategoryService extends IService<Category>
 {
     /**
      * 查询商品三级分类

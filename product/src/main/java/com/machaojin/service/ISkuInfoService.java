@@ -1,7 +1,11 @@
 package com.machaojin.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.machaojin.domain.SkuInfo;
+import com.machaojin.domain.SkuSaleAttrValue;
+import com.machaojin.vo.SkuInfoVo;
 
 /**
  * sku信息Service接口
@@ -10,7 +14,7 @@ import com.machaojin.domain.SkuInfo;
  * @date 2022-10-05
  */
 
-public interface ISkuInfoService 
+public interface ISkuInfoService extends IService<SkuInfo>
 {
     /**
      * 查询sku信息
@@ -26,7 +30,7 @@ public interface ISkuInfoService
      * @param skuInfo sku信息
      * @return sku信息集合
      */
-    public List<SkuInfo> selectSkuInfoList(SkuInfo skuInfo);
+    public List<SkuInfo> selectSkuInfoList(SkuInfoVo skuInfo);
 
     /**
      * 新增sku信息

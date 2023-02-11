@@ -28,19 +28,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectAttrAttrgroupRelationVo"/>
         where id = #{id}
     </select>
-        
-    <insert id="insertAttrAttrgroupRelation" parameterType="AttrAttrgroupRelation" useGeneratedKeys="true" keyProperty="id">
-        insert into pms_attr_attrgroup_relation
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="attrId != null">attr_id,</if>
-            <if test="attrGroupId != null">attr_group_id,</if>
-            <if test="attrSort != null">attr_sort,</if>
-         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="attrId != null">#{attrId},</if>
-            <if test="attrGroupId != null">#{attrGroupId},</if>
-            <if test="attrSort != null">#{attrSort},</if>
-         </trim>
+
+    <insert id="insertAttrAttrgroupRelation" useGeneratedKeys="true" keyProperty="id" parameterType="list">
+        insert into pms_attr_attrgroup_relation(attr_id,attr_group_id,attr_sort) values
+        <foreach collection="attrAttrgroupRelation" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.attrId != null">#{item.attrId},</if>
+                <if test="item.attrId == null">null,</if>
+                <if test="item.attrGroupId != null">#{item.attrGroupId},</if>
+                <if test="item.attrGroupId == null">null,</if>
+                <if test="item.attrSort != null">#{item.attrSort}</if>
+                <if test="item.attrSort == null">null</if>
+            </trim>
+        </foreach>
     </insert>
 
     <update id="updateAttrAttrgroupRelation" parameterType="AttrAttrgroupRelation">

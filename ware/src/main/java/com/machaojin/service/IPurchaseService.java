@@ -1,6 +1,9 @@
 package com.machaojin.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.machaojin.MergeVo;
 import com.machaojin.domain.Purchase;
 
 /**
@@ -10,7 +13,7 @@ import com.machaojin.domain.Purchase;
  * @date 2022-10-06
  */
 
-public interface IPurchaseService 
+public interface IPurchaseService extends IService<Purchase>
 {
     /**
      * 查询采购信息
@@ -59,4 +62,18 @@ public interface IPurchaseService
      * @return 结果
      */
     public int deletePurchaseById(Long id);
+
+    /**
+     * 查询为合并的采购信息列表
+     *
+     * @param purchase 采购信息
+     * @return 采购信息集合
+     */
+    List<Purchase> selectUnPurchaseList(Purchase purchase);
+
+
+    /**
+     * 合并采购需求到采购单上
+     */
+    int mergePurchase(MergeVo mergeVo);
 }

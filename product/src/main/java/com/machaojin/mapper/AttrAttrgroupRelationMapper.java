@@ -38,7 +38,7 @@ public interface AttrAttrgroupRelationMapper extends BaseMapper<AttrAttrgroupRel
      * @param attrAttrgroupRelation 属性&属性分组关联
      * @return 结果
      */
-    public int insertAttrAttrgroupRelation(AttrAttrgroupRelation attrAttrgroupRelation);
+    public int insertAttrAttrgroupRelation(@Param("attrAttrgroupRelation") List<AttrAttrgroupRelation> attrAttrgroupRelation);
 
     /**
      * 修改属性&属性分组关联

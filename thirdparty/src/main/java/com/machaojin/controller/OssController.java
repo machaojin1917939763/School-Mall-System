@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
@@ -28,7 +29,7 @@ import javax.annotation.Resource;
 public class OssController {
 
     @Resource
-    OSSClient ossClient;
+    public OSSClient ossClient;
 
     @Value("${spring.cloud.alicloud.access-key}")
     private String accessId;
@@ -67,7 +68,7 @@ public class OssController {
             policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
 
             String postPolicy = ossClient.generatePostPolicy(expiration, policyConds);
-            byte[] binaryData = postPolicy.getBytes("utf-8");
+            byte[] binaryData = postPolicy.getBytes(StandardCharsets.UTF_8);
             String encodedPolicy = BinaryUtil.toBase64String(binaryData);
             String postSignature = ossClient.calculatePostSignature(postPolicy);
 

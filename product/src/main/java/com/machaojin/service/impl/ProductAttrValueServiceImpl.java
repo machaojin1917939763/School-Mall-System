@@ -1,6 +1,12 @@
 package com.machaojin.service.impl;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.machaojin.basecode.Product;
+import com.machaojin.domain.SpuInfoDesc;
+import com.machaojin.mapper.SpuInfoDescMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.machaojin.mapper.ProductAttrValueMapper;
@@ -14,7 +20,7 @@ import com.machaojin.service.IProductAttrValueService;
  * @date 2022-10-05
  */
 @Service
-public class ProductAttrValueServiceImpl implements IProductAttrValueService 
+public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueMapper, ProductAttrValue> implements IProductAttrValueService
 {
     @Autowired
     private ProductAttrValueMapper productAttrValueMapper;
@@ -89,5 +95,15 @@ public class ProductAttrValueServiceImpl implements IProductAttrValueService
     public int deleteProductAttrValueById(Long id)
     {
         return productAttrValueMapper.deleteProductAttrValueById(id);
+    }
+
+    @Override
+    public int updateProductAttrValues(List<ProductAttrValue> productAttrValues, Integer spuId) {
+        productAttrValueMapper.delete(new LambdaQueryWrapper<ProductAttrValue>().eq(ProductAttrValue::getSpuId,spuId));
+        productAttrValues.forEach((productAttrValue -> {
+            productAttrValue.setSpuId(Long.parseLong(spuId.toString()));
+        }));
+
+        return this.saveBatch(productAttrValues) ? Product.ProductCode.SUCCESS.getCode() : Product.ProductCode.FAILED.getCode();
     }
 }

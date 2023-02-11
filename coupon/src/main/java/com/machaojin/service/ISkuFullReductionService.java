@@ -2,6 +2,7 @@ package com.machaojin.service;
 
 import java.util.List;
 import com.machaojin.domain.SkuFullReduction;
+import com.machaojin.dto.SkuReductionTo;
 
 /**
  * 商品满减信息Service接口
@@ -59,4 +60,11 @@ public interface ISkuFullReductionService
      * @return 结果
      */
     public int deleteSkuFullReductionById(Long id);
+
+    /**
+     * 保存商品的满减、优惠信息
+     * @param skuReductionTo
+     * @return
+     */
+    public int saveReductions(SkuReductionTo skuReductionTo);
 }

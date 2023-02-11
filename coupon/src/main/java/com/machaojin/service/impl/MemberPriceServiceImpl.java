@@ -1,6 +1,8 @@
 package com.machaojin.service.impl;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.machaojin.mapper.MemberPriceMapper;
@@ -14,7 +16,7 @@ import com.machaojin.service.IMemberPriceService;
  * @date 2022-10-05
  */
 @Service
-public class MemberPriceServiceImpl implements IMemberPriceService 
+public class MemberPriceServiceImpl extends ServiceImpl<MemberPriceMapper,MemberPrice> implements IMemberPriceService
 {
     @Autowired
     private MemberPriceMapper memberPriceMapper;

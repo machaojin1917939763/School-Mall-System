@@ -28,7 +28,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
  * @date 2022-10-06
  */
 @RestController
-@RequestMapping("/machaojin/detail/one")
+@RequestMapping("/machaojin/purchasedetail")
 public class PurchaseDetailController extends BaseController
 {
     @Autowired
@@ -63,7 +63,7 @@ public class PurchaseDetailController extends BaseController
      * 获取【请填写功能名称】详细信息
      */
     @PreAuthorize("@ss.hasPermi('machaojin:detail:query')")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/info/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         return AjaxResult.success(purchaseDetailService.selectPurchaseDetailById(id));
@@ -74,7 +74,7 @@ public class PurchaseDetailController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:detail:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
-    @PostMapping
+    @PostMapping("/save")
     public AjaxResult add(@RequestBody PurchaseDetail purchaseDetail)
     {
         return toAjax(purchaseDetailService.insertPurchaseDetail(purchaseDetail));
@@ -85,7 +85,7 @@ public class PurchaseDetailController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:detail:edit')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PostMapping("/update")
     public AjaxResult edit(@RequestBody PurchaseDetail purchaseDetail)
     {
         return toAjax(purchaseDetailService.updatePurchaseDetail(purchaseDetail));
@@ -96,8 +96,8 @@ public class PurchaseDetailController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:detail:remove')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+	@PostMapping("/delete")
+    public AjaxResult remove(@RequestBody Long[] ids)
     {
         return toAjax(purchaseDetailService.deletePurchaseDetailByIds(ids));
     }

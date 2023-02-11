@@ -1,6 +1,8 @@
 package com.machaojin.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.machaojin.domain.SkuSaleAttrValue;
 
 /**
@@ -10,7 +12,7 @@ import com.machaojin.domain.SkuSaleAttrValue;
  * @date 2022-10-05
  */
 
-public interface ISkuSaleAttrValueService 
+public interface ISkuSaleAttrValueService extends IService<SkuSaleAttrValue>
 {
     /**
      * 查询sku销售属性&值
@@ -59,4 +61,7 @@ public interface ISkuSaleAttrValueService
      * @return 结果
      */
     public int deleteSkuSaleAttrValueById(Long id);
+
+
+
 }

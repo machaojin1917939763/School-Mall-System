@@ -1,7 +1,10 @@
 package com.machaojin.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.machaojin.domain.ProductAttrValue;
+import com.machaojin.domain.SkuImages;
 
 /**
  * spu属性值Service接口
@@ -10,7 +13,7 @@ import com.machaojin.domain.ProductAttrValue;
  * @date 2022-10-05
  */
 
-public interface IProductAttrValueService 
+public interface IProductAttrValueService extends IService<ProductAttrValue>
 {
     /**
      * 查询spu属性值
@@ -59,4 +62,12 @@ public interface IProductAttrValueService
      * @return 结果
      */
     public int deleteProductAttrValueById(Long id);
+
+    /**
+     * 修改spu属性值
+     *
+     * @param productAttrValues spu属性值
+     * @return 结果
+     */
+    int updateProductAttrValues(List<ProductAttrValue> productAttrValues, Integer spuId);
 }

@@ -1,6 +1,9 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.machaojin.domain.SpuInfo;
 import com.machaojin.domain.SpuInfoDesc;
 
 /**
@@ -10,7 +13,7 @@ import com.machaojin.domain.SpuInfoDesc;
  * @date 2022-10-05
  */
 @org.apache.ibatis.annotations.Mapper
-public interface SpuInfoDescMapper 
+public interface SpuInfoDescMapper extends BaseMapper<SpuInfoDesc>
 {
     /**
      * 查询spu信息介绍

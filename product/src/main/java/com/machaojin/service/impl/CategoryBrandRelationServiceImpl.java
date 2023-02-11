@@ -2,10 +2,14 @@ package com.machaojin.service.impl;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.machaojin.domain.Brand;
 import com.machaojin.domain.Category;
+import com.machaojin.domain.SpuInfoDesc;
 import com.machaojin.mapper.BrandMapper;
 import com.machaojin.mapper.CategoryMapper;
+import com.machaojin.mapper.SpuInfoDescMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.machaojin.mapper.CategoryBrandRelationMapper;
@@ -19,7 +23,7 @@ import com.machaojin.service.ICategoryBrandRelationService;
  * @date 2022-10-05
  */
 @Service
-public class CategoryBrandRelationServiceImpl implements ICategoryBrandRelationService 
+public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandRelationMapper, CategoryBrandRelation> implements ICategoryBrandRelationService
 {
     @Autowired
     private CategoryBrandRelationMapper categoryBrandRelationMapper;
@@ -105,5 +109,15 @@ public class CategoryBrandRelationServiceImpl implements ICategoryBrandRelationS
     public int deleteCategoryBrandRelationById(Long id)
     {
         return categoryBrandRelationMapper.deleteCategoryBrandRelationById(id);
+    }
+
+    /**
+     * 根据分类Id查询分类与品牌的关系
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public List<CategoryBrandRelation> selectCategoryBrandRelationByCategoryId(Long categoryId) {
+        return categoryBrandRelationMapper.selectList(new LambdaQueryWrapper<CategoryBrandRelation>().eq(CategoryBrandRelation::getCatelogId,categoryId));
     }
 }

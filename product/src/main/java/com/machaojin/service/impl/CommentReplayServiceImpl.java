@@ -1,6 +1,10 @@
 package com.machaojin.service.impl;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.machaojin.domain.SpuInfoDesc;
+import com.machaojin.mapper.SpuInfoDescMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.machaojin.mapper.CommentReplayMapper;
@@ -14,7 +18,7 @@ import com.machaojin.service.ICommentReplayService;
  * @date 2022-10-05
  */
 @Service
-public class CommentReplayServiceImpl implements ICommentReplayService 
+public class CommentReplayServiceImpl extends ServiceImpl<CommentReplayMapper, CommentReplay> implements ICommentReplayService
 {
     @Autowired
     private CommentReplayMapper commentReplayMapper;

@@ -53,12 +53,13 @@ public class GulimallProductControllerAdvice {
 
     /**
      * 处理所有的未知错误
-     * @param throwable 所有异常的父类
+     * @param exception 所有异常的父类
      * @return 返回错误代码
      */
     @ExceptionHandler(value = Throwable.class)
-    public AjaxResult allException(Throwable throwable){
-        log.error("未知错误{}，错误类型{},错在哪{}}",throwable.getMessage(),throwable.getClass(),throwable.getStackTrace());
+    public AjaxResult allException(Throwable exception){
+        log.error("未知错误{}，错误类型{},错在哪{}}",exception.getMessage(),exception.getClass(),exception.getStackTrace());
+        exception.printStackTrace();
         return AjaxResult.error(BaseCode.UNKNOWN_EXCEPTION.getCode(), BaseCode.UNKNOWN_EXCEPTION.getMsg());
     }
 

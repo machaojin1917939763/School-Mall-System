@@ -63,7 +63,7 @@ public class MemberLevelController extends BaseController
      * 获取会员等级详细信息
      */
     @PreAuthorize("@ss.hasPermi('machaojin:level:query')")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/info/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         return AjaxResult.success(memberLevelService.selectMemberLevelById(id));
@@ -74,7 +74,7 @@ public class MemberLevelController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:level:add')")
     @Log(title = "会员等级", businessType = BusinessType.INSERT)
-    @PostMapping
+    @PostMapping("/save")
     public AjaxResult add(@RequestBody MemberLevel memberLevel)
     {
         return toAjax(memberLevelService.insertMemberLevel(memberLevel));
@@ -85,7 +85,7 @@ public class MemberLevelController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:level:edit')")
     @Log(title = "会员等级", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PostMapping("/update")
     public AjaxResult edit(@RequestBody MemberLevel memberLevel)
     {
         return toAjax(memberLevelService.updateMemberLevel(memberLevel));
@@ -96,8 +96,8 @@ public class MemberLevelController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:level:remove')")
     @Log(title = "会员等级", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+	@PostMapping("/delete")
+    public AjaxResult remove(@RequestBody Long[] ids)
     {
         return toAjax(memberLevelService.deleteMemberLevelByIds(ids));
     }

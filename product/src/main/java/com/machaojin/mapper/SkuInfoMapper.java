@@ -1,7 +1,11 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.machaojin.domain.SkuInfo;
+import com.machaojin.domain.SpuInfo;
+import com.machaojin.vo.SkuInfoVo;
 
 /**
  * sku信息Mapper接口
@@ -10,7 +14,7 @@ import com.machaojin.domain.SkuInfo;
  * @date 2022-10-05
  */
 @org.apache.ibatis.annotations.Mapper
-public interface SkuInfoMapper 
+public interface SkuInfoMapper extends BaseMapper<SkuInfo>
 {
     /**
      * 查询sku信息
@@ -26,7 +30,7 @@ public interface SkuInfoMapper
      * @param skuInfo sku信息
      * @return sku信息集合
      */
-    public List<SkuInfo> selectSkuInfoList(SkuInfo skuInfo);
+    public List<SkuInfo> selectSkuInfoList(SkuInfoVo skuInfo);
 
     /**
      * 新增sku信息

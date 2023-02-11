@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import com.machaojin.valid.AddGroups;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
@@ -37,6 +38,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/machaojin/brand")
+@Transactional(rollbackFor = Exception.class)
 public class BrandController extends BaseController
 {
     @Autowired
@@ -108,7 +110,7 @@ public class BrandController extends BaseController
      * 修改品牌
      *
      */
-//    @PreAuthorize("@ss.hasPermi('machaojin:brand:edit')")
+    @PreAuthorize("@ss.hasPermi('machaojin:brand:edit')")
     @Log(title = "品牌", businessType = BusinessType.UPDATE)
     @PostMapping("/update")
     public AjaxResult edit(@RequestBody Brand brand)

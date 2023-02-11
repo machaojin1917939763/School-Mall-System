@@ -62,6 +62,7 @@ public class Attr
     @Excel(name = "值类型")
     private String valueType;
 
+
     public String getValueType() {
         return valueType;
     }

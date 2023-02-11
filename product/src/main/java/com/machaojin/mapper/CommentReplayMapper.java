@@ -1,7 +1,10 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.machaojin.domain.CommentReplay;
+import com.machaojin.domain.SpuInfo;
 
 /**
  * 商品评价回复关系Mapper接口
@@ -10,7 +13,7 @@ import com.machaojin.domain.CommentReplay;
  * @date 2022-10-05
  */
 @org.apache.ibatis.annotations.Mapper
-public interface CommentReplayMapper 
+public interface CommentReplayMapper extends BaseMapper<CommentReplay>
 {
     /**
      * 查询商品评价回复关系

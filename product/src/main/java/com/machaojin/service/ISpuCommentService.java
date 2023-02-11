@@ -1,7 +1,10 @@
 package com.machaojin.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.machaojin.domain.SpuComment;
+import com.machaojin.domain.SpuImages;
 
 /**
  * 商品评价Service接口
@@ -10,7 +13,7 @@ import com.machaojin.domain.SpuComment;
  * @date 2022-10-05
  */
 
-public interface ISpuCommentService 
+public interface ISpuCommentService extends IService<SpuComment>
 {
     /**
      * 查询商品评价

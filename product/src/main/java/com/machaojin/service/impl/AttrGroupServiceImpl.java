@@ -13,7 +13,9 @@ import com.machaojin.domain.AttrAttrgroupRelation;
 import com.machaojin.domain.Category;
 import com.machaojin.exception.DataDeleteException;
 import com.machaojin.mapper.AttrAttrgroupRelationMapper;
+import com.machaojin.mapper.AttrMapper;
 import com.machaojin.vo.AttrRelationVo;
+import com.machaojin.vo.AttrVo;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.domain.R;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +48,9 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper,AttrGroup>
 
     @Autowired
     private AttrAttrgroupRelationMapper attrAttrgroupRelationMapper;
+
+    @Autowired
+    private AttrMapper attrMapper;
 
     /**
      * 查询属性分组
@@ -190,11 +195,9 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper,AttrGroup>
 
         Page<AttrGroup> page = new Page<>(Long.parseLong((String) params.get("page")),Long.parseLong((String) params.get("limit")));
 
-
-
         lambdaQueryWrapper.eq(StringUtils.isNotEmpty(catalogId),AttrGroup::getCatelogId,catalogId);
 
-        boolean flag = StringUtils.isNotEmpty((String) params.get("sidx")) && "asc".equals((String) params.get("sidx"));
+        boolean flag = StringUtils.isNotEmpty((String) params.get("sidx")) && "asc".equals(params.get("sidx"));
         if (params.get("key") == null){
             return this.page(page,lambdaQueryWrapper);
         }
@@ -229,10 +232,91 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper,AttrGroup>
         return attrAttrgroupRelationMapper.deleteFor(collect);
     }
 
+    /**
+     * 查找没有被属性分组绑定的基本属性
+     * @param attrGroupId
+     * @param params
+     * @return
+     */
     @Override
-    public List<Attr> listFor(String attrGroupId, Map<String, String> params) {
-//        attrAttrgroupRelationMapper.selectList()
+    public List<Attr> listFor(String attrGroupId, Map<Object, Object> params) {
+        //2、查询所有的attr
+        List<Attr> allAttr = attrMapper.selectList(new LambdaQueryWrapper<Attr>().like(StringUtils.isNotEmpty(params.get("key").toString()),Attr::getAttrName,params.get("key")));
+        if (allAttr == null || allAttr.size() == 0){
+            return new ArrayList<>();
+        }
+        HashMap<Long,Attr> attrs = new HashMap<>();
 
-        return null;
+        allAttr.forEach(attr -> attrs.put(attr.getAttrId(),attr));
+
+        //3、查询attr_group和attr的关系表attr_group_relation表中的所有的attrGroupId数据
+        List<AttrAttrgroupRelation> attrAttrgroupRelations = attrAttrgroupRelationMapper.selectList(null);
+        if (attrAttrgroupRelations == null || attrAttrgroupRelations.size() == 0){
+            return allAttr;
+        }
+        List<Long> inRelationAttrId = attrAttrgroupRelations.stream().map(AttrAttrgroupRelation::getAttrId).collect(Collectors.toList());
+        //4、比对attr所有的数据和查询出关联的数据，没在的就返回
+        List<Attr> newAttr = new ArrayList<>();
+        allAttr.forEach((a) -> {
+            if(!inRelationAttrId.contains(a.getAttrId())){
+                newAttr.add(attrs.get(a.getAttrId()));
+            }
+        });
+        if (params.get("limit") == null || params.get("key") == null){
+            return newAttr;
+        }
+        //物理分页
+        int pageSize = Integer.parseInt(params.get("limit").toString());
+        int page = Integer.parseInt(params.get("page").toString());
+
+        if(pageSize >= newAttr.size()){
+            return newAttr;
+        }else{
+            List<Attr> attrList = new ArrayList<>();
+            int size = newAttr.size();
+            int pageFlag = 0;
+            while (size > pageSize){
+                size -= pageSize;
+                pageFlag++;
+            }
+            if(pageFlag <= page){
+                for (int i = newAttr.size() - 1 - size; i < newAttr.size(); i++) {
+                    attrList.add(newAttr.get(i));
+                }
+            }else{
+                int start = page * pageSize - 1;
+                for (int i = 0; i < pageSize; i++) {
+                    attrList.add(newAttr.get(start + i));
+                }
+            }
+            return attrList;
+        }
+
+
+    }
+
+    /**
+     * 根据分类id查询出所有的分组信息，然后再查出每个分组信息关联的所有属性
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public List<AttrGroup> listAllAttr(Long categoryId) {
+        //查询出所有的attrgroup
+        List<AttrGroup> attrGroups = attrGroupMapper.selectList(new LambdaQueryWrapper<AttrGroup>().eq(AttrGroup::getCatelogId, categoryId));
+        if (attrGroups != null && attrGroups.size() > 0){
+            attrGroups.forEach((attrGroup -> {
+                List<AttrVo> withAttrGroup = new ArrayList<>();
+                List<AttrAttrgroupRelation> relations = attrAttrgroupRelationMapper.selectList(new LambdaQueryWrapper<AttrAttrgroupRelation>().eq(AttrAttrgroupRelation::getAttrGroupId, attrGroup.getAttrGroupId()));
+                relations.forEach((relation) -> {
+                    AttrVo attrVo = new AttrVo();
+                    BeanUtils.copyProperties(attrMapper.selectAttrByAttrId(relation.getAttrId()),attrVo);
+                    withAttrGroup.add(attrVo);
+                });
+
+                attrGroup.setAttrs(withAttrGroup);
+            }));
+        }
+        return attrGroups;
     }
 }

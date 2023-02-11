@@ -19,6 +19,10 @@ public class Product {
          */
         PRODUCT_TYPE_BASE(1,"base"),
 
+        SUCCESS(1,"success"),
+
+        FAILED(0,"failed"),
+
         /**
          * 查询类型，是否是全部
          */

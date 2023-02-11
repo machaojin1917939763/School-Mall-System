@@ -1,13 +1,19 @@
 server:
   port: 8084
 spring:
+  profiles:
+    active: dev
+    #    active: prod
+    #    active: test
   datasource:
     druid:
       url: jdbc:mysql://101.42.149.76:49153/gulimall_pms?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=False&serverTimezone=GMT%2B8
       username: root
       password: machaojin
       driver-class-name: com.mysql.cj.jdbc.Driver
-      #配置阿里的OSS云存储key
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  #配置阿里的OSS云存储key
   cloud:
     alicloud:
       access-key: LTAI5tB3z4Pp32ihGgtDemZ5

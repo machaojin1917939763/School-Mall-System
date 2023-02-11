@@ -33,6 +33,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/machaojin/group")
+@Transactional(rollbackFor = Exception.class)
 public class AttrGroupController extends BaseController
 {
     @Autowired
@@ -53,7 +54,7 @@ public class AttrGroupController extends BaseController
      * @param  catalogId id
      * @return 属性分组集合
      */
-//    @PreAuthorize("@ss.hasPermi('machaojin:group:list')")
+    @PreAuthorize("@ss.hasPermi('machaojin:group:list')")
     @GetMapping("/list/{catalogId}")
     public TableDataInfo list(@RequestParam Map<String, Object> params, @PathVariable String catalogId)
     {
@@ -70,6 +71,11 @@ public class AttrGroupController extends BaseController
 
     //product/machaojin/group/1/attr/relation
 
+    /**
+     * 查询关联的属性和属性分组
+     * @param attrgroupId
+     * @return
+     */
     @GetMapping("{attrgroupId}/attr/relation")
     public AjaxResult list(@PathVariable Long attrgroupId){
        List<Attr> attrList = attrService.selectAttrListAll(attrgroupId);
@@ -127,8 +133,8 @@ public class AttrGroupController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:group:remove')")
     @Log(title = "属性分组", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{attrGroupIds}")
-    public AjaxResult remove(@PathVariable Long[] attrGroupIds)
+	@PostMapping("/delete")
+    public AjaxResult remove(@RequestBody Long[] attrGroupIds)
     {
         return toAjax(attrGroupService.deleteAttrGroupByAttrGroupIds(attrGroupIds));
     }
@@ -152,10 +158,17 @@ public class AttrGroupController extends BaseController
     @GetMapping("/{attrGroupId}/noattr/relation")
     @PreAuthorize("@ss.hasPermi('machaojin:group:remove')")
     @Log(title = "属性分组", businessType = BusinessType.EXPORT)
-    public AjaxResult getNoAttr(@PathVariable String attrGroupId,@RequestBody Map<String,String> params)
+    public AjaxResult getNoAttr(@PathVariable String attrGroupId, @RequestParam Map<Object,Object> params)
     {
         return AjaxResult.success(attrGroupService.listFor(attrGroupId,params));
     }
+
+    @GetMapping("{categoryId}/withattr")
+    @PreAuthorize("@ss.hasPermi('machaojin:group:list')")
+   public AjaxResult getAllAttrGroup(@PathVariable Long categoryId){
+        return AjaxResult.success(attrGroupService.listAllAttr(categoryId));
+    }
+
 
 
 }

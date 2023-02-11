@@ -1,7 +1,10 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.machaojin.domain.SpuComment;
+import com.machaojin.domain.SpuInfo;
 
 /**
  * 商品评价Mapper接口
@@ -10,7 +13,7 @@ import com.machaojin.domain.SpuComment;
  * @date 2022-10-05
  */
 @org.apache.ibatis.annotations.Mapper
-public interface SpuCommentMapper 
+public interface SpuCommentMapper extends BaseMapper<SpuComment>
 {
     /**
      * 查询商品评价

@@ -1,6 +1,11 @@
 package com.machaojin.service.impl;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.machaojin.domain.SpuInfoDesc;
+import com.machaojin.mapper.SpuInfoDescMapper;
+import com.machaojin.vo.SkuInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.machaojin.mapper.SkuInfoMapper;
@@ -14,7 +19,7 @@ import com.machaojin.service.ISkuInfoService;
  * @date 2022-10-05
  */
 @Service
-public class SkuInfoServiceImpl implements ISkuInfoService 
+public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> implements ISkuInfoService
 {
     @Autowired
     private SkuInfoMapper skuInfoMapper;
@@ -38,7 +43,7 @@ public class SkuInfoServiceImpl implements ISkuInfoService
      * @return sku信息
      */
     @Override
-    public List<SkuInfo> selectSkuInfoList(SkuInfo skuInfo)
+    public List<SkuInfo> selectSkuInfoList(SkuInfoVo skuInfo)
     {
         return skuInfoMapper.selectSkuInfoList(skuInfo);
     }

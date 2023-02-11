@@ -1,7 +1,10 @@
 package com.machaojin.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.machaojin.domain.CommentReplay;
+import com.machaojin.domain.ProductAttrValue;
 
 /**
  * 商品评价回复关系Service接口
@@ -10,7 +13,7 @@ import com.machaojin.domain.CommentReplay;
  * @date 2022-10-05
  */
 
-public interface ICommentReplayService 
+public interface ICommentReplayService extends IService<CommentReplay>
 {
     /**
      * 查询商品评价回复关系

@@ -34,7 +34,7 @@ public interface IAttrAttrgroupRelationService
      * @param attrAttrgroupRelation 属性&属性分组关联
      * @return 结果
      */
-    public int insertAttrAttrgroupRelation(AttrAttrgroupRelation attrAttrgroupRelation);
+    public int insertAttrAttrgroupRelation(List<AttrAttrgroupRelation> attrAttrgroupRelation);
 
     /**
      * 修改属性&属性分组关联

@@ -28,7 +28,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
  * @date 2022-10-05
  */
 @RestController
-@RequestMapping("/machaojin/value")
+@RequestMapping("/machaojin/sku/sale/attr/value")
 public class SkuSaleAttrValueController extends BaseController
 {
     @Autowired
@@ -63,7 +63,7 @@ public class SkuSaleAttrValueController extends BaseController
      * 获取sku销售属性&值详细信息
      */
     @PreAuthorize("@ss.hasPermi('machaojin:value:query')")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/info/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         return AjaxResult.success(skuSaleAttrValueService.selectSkuSaleAttrValueById(id));
@@ -74,7 +74,7 @@ public class SkuSaleAttrValueController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:value:add')")
     @Log(title = "sku销售属性&值", businessType = BusinessType.INSERT)
-    @PostMapping
+    @PostMapping("/save")
     public AjaxResult add(@RequestBody SkuSaleAttrValue skuSaleAttrValue)
     {
         return toAjax(skuSaleAttrValueService.insertSkuSaleAttrValue(skuSaleAttrValue));
@@ -85,7 +85,7 @@ public class SkuSaleAttrValueController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:value:edit')")
     @Log(title = "sku销售属性&值", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PostMapping("/update")
     public AjaxResult edit(@RequestBody SkuSaleAttrValue skuSaleAttrValue)
     {
         return toAjax(skuSaleAttrValueService.updateSkuSaleAttrValue(skuSaleAttrValue));
@@ -96,8 +96,8 @@ public class SkuSaleAttrValueController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:value:remove')")
     @Log(title = "sku销售属性&值", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+	@PostMapping("/delete")
+    public AjaxResult remove(@RequestBody Long[] ids)
     {
         return toAjax(skuSaleAttrValueService.deleteSkuSaleAttrValueByIds(ids));
     }

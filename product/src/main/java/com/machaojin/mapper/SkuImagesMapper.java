@@ -1,7 +1,10 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.machaojin.domain.SkuImages;
+import com.machaojin.domain.SpuInfo;
 
 /**
  * sku图片Mapper接口
@@ -10,7 +13,7 @@ import com.machaojin.domain.SkuImages;
  * @date 2022-10-05
  */
 @org.apache.ibatis.annotations.Mapper
-public interface SkuImagesMapper 
+public interface SkuImagesMapper extends BaseMapper<SkuImages>
 {
     /**
      * 查询sku图片

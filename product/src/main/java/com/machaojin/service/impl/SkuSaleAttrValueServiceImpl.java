@@ -1,6 +1,9 @@
 package com.machaojin.service.impl;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.machaojin.mapper.SkuSaleAttrValueMapper;
@@ -14,7 +17,7 @@ import com.machaojin.service.ISkuSaleAttrValueService;
  * @date 2022-10-05
  */
 @Service
-public class SkuSaleAttrValueServiceImpl implements ISkuSaleAttrValueService 
+public class SkuSaleAttrValueServiceImpl extends ServiceImpl<SkuSaleAttrValueMapper, SkuSaleAttrValue> implements ISkuSaleAttrValueService
 {
     @Autowired
     private SkuSaleAttrValueMapper skuSaleAttrValueMapper;
@@ -90,4 +93,5 @@ public class SkuSaleAttrValueServiceImpl implements ISkuSaleAttrValueService
     {
         return skuSaleAttrValueMapper.deleteSkuSaleAttrValueById(id);
     }
+
 }

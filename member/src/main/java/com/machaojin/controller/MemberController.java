@@ -63,7 +63,7 @@ public class MemberController extends BaseController
      * 获取会员详细信息
      */
     @PreAuthorize("@ss.hasPermi('machaojin:member:query')")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/info/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         return AjaxResult.success(memberService.selectMemberById(id));

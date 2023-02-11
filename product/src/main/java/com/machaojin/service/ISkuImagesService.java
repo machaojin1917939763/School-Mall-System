@@ -1,7 +1,10 @@
 package com.machaojin.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.machaojin.domain.SkuImages;
+import com.machaojin.domain.SkuInfo;
 
 /**
  * sku图片Service接口
@@ -10,7 +13,7 @@ import com.machaojin.domain.SkuImages;
  * @date 2022-10-05
  */
 
-public interface ISkuImagesService 
+public interface ISkuImagesService extends IService<SkuImages>
 {
     /**
      * 查询sku图片

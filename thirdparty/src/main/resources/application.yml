@@ -1,4 +1,8 @@
 spring:
+  profiles:
+    active: dev
+    #    active: prod
+    #    active: test
   cloud:
     alicloud:
       access-key: LTAI5tB3z4Pp32ihGgtDemZ5

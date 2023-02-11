@@ -78,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="enable != null">enable = #{enable},</if>
             <if test="catelogId != null">catelog_id = #{catelogId},</if>
             <if test="showDesc != null">show_desc = #{showDesc},</if>
-            <if test="valueType != null">show_desc = #{valueType},</if>
+            <if test="valueType != null">value_type = #{valueType},</if>
         </trim>
         where attr_id = #{attrId}
     </update>

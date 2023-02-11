@@ -38,7 +38,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectPurchaseVo"/>
         where id = #{id}
     </select>
-        
+    <select id="selectUnPurchaseList" parameterType="Purchase" resultMap="PurchaseResult">
+        <include refid="selectPurchaseVo"/>
+        <where>
+            <if test="assigneeId != null "> and assignee_id = #{assigneeId}</if>
+            <if test="assigneeName != null  and assigneeName != ''"> and assignee_name like concat('%', #{assigneeName}, '%')</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="priority != null "> and priority = #{priority}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="wareId != null "> and ware_id = #{wareId}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+             and  status = 0
+        </where>
+    </select>
+
     <insert id="insertPurchase" parameterType="Purchase" useGeneratedKeys="true" keyProperty="id">
         insert into wms_purchase
         <trim prefix="(" suffix=")" suffixOverrides=",">

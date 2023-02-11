@@ -1,7 +1,10 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.machaojin.domain.ProductAttrValue;
+import com.machaojin.domain.SpuInfo;
 
 /**
  * spu属性值Mapper接口
@@ -10,7 +13,7 @@ import com.machaojin.domain.ProductAttrValue;
  * @date 2022-10-05
  */
 @org.apache.ibatis.annotations.Mapper
-public interface ProductAttrValueMapper 
+public interface ProductAttrValueMapper extends BaseMapper<ProductAttrValue>
 {
     /**
      * 查询spu属性值

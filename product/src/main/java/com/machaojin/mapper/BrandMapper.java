@@ -1,7 +1,10 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.machaojin.domain.Brand;
+import com.machaojin.domain.Category;
 
 /**
  * 品牌Mapper接口
@@ -10,7 +13,7 @@ import com.machaojin.domain.Brand;
  * @date 2022-10-05
  */
 @org.apache.ibatis.annotations.Mapper
-public interface BrandMapper 
+public interface BrandMapper extends BaseMapper<Brand>
 {
     /**
      * 查询品牌

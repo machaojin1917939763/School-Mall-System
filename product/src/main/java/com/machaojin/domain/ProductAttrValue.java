@@ -1,5 +1,6 @@
 package com.machaojin.domain;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
@@ -13,7 +14,8 @@ import org.apache.ibatis.type.Alias;
  * @date 2022-10-05
  */
 @Alias("ProductAttrValue")
-public class ProductAttrValue extends BaseEntity
+@TableName("pms_product_attr_value")
+public class ProductAttrValue
 {
     private static final long serialVersionUID = 1L;
 

@@ -28,7 +28,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
  * @date 2022-10-06
  */
 @RestController
-@RequestMapping("/machaojin/task")
+@RequestMapping("/machaojin/ware/order/task")
 public class WareOrderTaskController extends BaseController
 {
     @Autowired

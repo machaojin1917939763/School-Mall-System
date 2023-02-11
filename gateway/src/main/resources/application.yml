@@ -1,6 +1,8 @@
 spring:
   profiles:
     active: dev
+    #    active: prod
+    #    active: test
   cloud:
    gateway:
      routes:
@@ -20,6 +22,34 @@ spring:
                ##路径重写，将api路径重写成renren-fast/路径，后面的参数不变
          filters:
            - RewritePath=/api/product/?(?<segment>.*), /$\{segment}
+
+      #会员服务路由
+       - id: member_route
+         uri: lb://member
+         predicates:
+           - Path=/api/member/**
+          ##路径重写，将api路径重写成renren-fast/路径，后面的参数不变
+         filters:
+           - RewritePath=/api/member/?(?<segment>.*), /$\{segment}
+
+
+       #仓库服务路由
+       - id: ware_route
+         uri: lb://ware
+         predicates:
+           - Path=/api/ware/**
+           ##路径重写，将api路径重写成renren-fast/路径，后面的参数不变
+         filters:
+           - RewritePath=/api/ware/?(?<segment>.*), /$\{segment}
+
+       #订单服务路由
+       - id: order_route
+         uri: lb://order
+         predicates:
+           - Path=/api/order/**
+          ##路径重写，将api路径重写成renren-fast/路径，后面的参数不变
+         filters:
+           - RewritePath=/api/order/?(?<segment>.*), /$\{segment}
 
 
        #人人开源后台管理路由

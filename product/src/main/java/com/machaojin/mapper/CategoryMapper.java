@@ -1,7 +1,10 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.machaojin.domain.Category;
+import com.machaojin.domain.CommentReplay;
 
 /**
  * 商品三级分类Mapper接口
@@ -10,7 +13,7 @@ import com.machaojin.domain.Category;
  * @date 2022-10-05
  */
 @org.apache.ibatis.annotations.Mapper
-public interface CategoryMapper 
+public interface CategoryMapper extends BaseMapper<Category>
 {
     /**
      * 查询商品三级分类

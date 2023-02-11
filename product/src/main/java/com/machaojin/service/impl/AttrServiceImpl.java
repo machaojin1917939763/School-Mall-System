@@ -16,6 +16,7 @@ import com.machaojin.exception.DataDeleteException;
 import com.machaojin.mapper.AttrAttrgroupRelationMapper;
 import com.machaojin.mapper.AttrGroupMapper;
 import com.machaojin.mapper.CategoryMapper;
+import com.machaojin.vo.AttrRelationVo;
 import com.machaojin.vo.AttrReqVo;
 import com.machaojin.vo.AttrVo;
 import com.ruoyi.common.utils.StringUtils;
@@ -67,17 +68,10 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper,Attr> implements IAt
     @Override
     public AttrReqVo selectAttrByAttrId(Long attrId)
     {
-
         //查询到属性主体
         Attr attr = attrMapper.selectAttrByAttrId(attrId);
-
-
         AttrReqVo attrReqVo = new AttrReqVo();
-
         BeanUtils.copyProperties(attr,attrReqVo);
-
-
-
         //根据属性主体查询分类，获取分类名字
         List<Category> categories = categoryMapper.selectCategoryList(null);
         Category category = null;
@@ -87,8 +81,6 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper,Attr> implements IAt
                 break;
             }
         }
-
-
         if (category != null){
             //查询分类名字
             AttrAttrgroupRelation attrAttrgroupRelation = attrAttrgroupRelationMapper.selectOne(new LambdaQueryWrapper<AttrAttrgroupRelation>().eq(AttrAttrgroupRelation::getAttrId, attr.getAttrId()));
@@ -96,24 +88,26 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper,Attr> implements IAt
             //查询分类数据
             List<Long> path = new ArrayList<>();
             service.getPath(category,path,categories);
-            //插入分组路径
-            attrReqVo.setCatelogPath(path);
-            if (attrAttrgroupRelation != null && Product.ProductCode.PRODUCT_TYPE_BASE.getCode().equals(attr.getAttrType())){
-                //  是销售属性才查询分组，否则就不查询
+            //反转分类路径
+            List<Long> newPath = new ArrayList<>();
+            int size = path.size() - 1;
+            while (path.size() != 0){
+                newPath.add(path.remove(size--));
+            }
+            //插入分类路径
+            attrReqVo.setCatelogPath(newPath);
 
+            if (attrAttrgroupRelation != null && Product.ProductCode.PRODUCT_TYPE_BASE.getCode().equals(attr.getAttrType())){
+                //  是规格参数才查询分组，否则就不查询
                    //查询分组名字
                    AttrGroup attrGroup = attrGroupMapper.selectOne(new LambdaQueryWrapper<AttrGroup>().eq(AttrGroup::getAttrGroupId, attrAttrgroupRelation.getAttrGroupId()));
                    if (attrGroup != null){
                        attrReqVo.setGroupName(attrGroup.getAttrGroupName());
-
                        //分组 ID
                        attrReqVo.setAttrGroupId(attrGroup.getAttrGroupName());
-
-
                    }
             }
         }
-
         return attrReqVo;
     }
 
@@ -148,16 +142,27 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper,Attr> implements IAt
      * @return 结果
      */
     @Override
-    public int updateAttr(Attr attr)
+    public int updateAttr(AttrVo attr)
     {
         //基础属性才添加分组
         if (attr.getAttrType().equals(Product.ProductCode.PRODUCT_TYPE_BASE.getCode())){
             //同时修改关联表中的信息,把关联表中的分组 ID 修改成传递过来的数据
             AttrAttrgroupRelation attrAttrgroupRelation = new AttrAttrgroupRelation();
             attrAttrgroupRelation.setAttrId(attr.getAttrId());
-            attrAttrgroupRelationMapper.update(attrAttrgroupRelation,new LambdaQueryWrapper<AttrAttrgroupRelation>().eq(AttrAttrgroupRelation::getAttrId,attr.getAttrId()));
+            attrAttrgroupRelation.setAttrGroupId(Long.parseLong(attr.getAttrGroupId()));
+            AttrAttrgroupRelation relation = attrAttrgroupRelationMapper.selectOne(new LambdaQueryWrapper<AttrAttrgroupRelation>().eq(AttrAttrgroupRelation::getAttrId, attr.getAttrId()));
+            //如果存在就修改，不存在就添加
+            if (relation == null){
+                List<AttrAttrgroupRelation> relations = new ArrayList<>();
+                relations.add(attrAttrgroupRelation);
+                attrAttrgroupRelationMapper.insertAttrAttrgroupRelation(relations);
+            }else{
+                attrAttrgroupRelationMapper.update(attrAttrgroupRelation,new LambdaQueryWrapper<AttrAttrgroupRelation>().eq(AttrAttrgroupRelation::getAttrId,attr.getAttrId()));
+            }
         }
-        return attrMapper.updateAttr(attr);
+        Attr attr1 = new Attr();
+        BeanUtils.copyProperties(attr,attr1);
+        return attrMapper.updateAttr(attr1);
     }
 
     /**
@@ -213,8 +218,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper,Attr> implements IAt
 
             attrAttrgroupRelation.setAttrGroupId(Long.parseLong(attr.getAttrGroupId()));
             attrAttrgroupRelation.setAttrId(attra.getAttrId());
-
-             i1 = attrAttrgroupRelationMapper.insertAttrAttrgroupRelation(attrAttrgroupRelation);
+            List<AttrAttrgroupRelation> relations = new ArrayList<>();
+            relations.add(attrAttrgroupRelation);
+             i1 = attrAttrgroupRelationMapper.insertAttrAttrgroupRelation(relations);
         }
         return i || (i1 > 0) ? 2 : 0;
     }
@@ -298,6 +304,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper,Attr> implements IAt
     public List<Attr> selectAttrListAll(Long attrgroupId) {
 
         List<AttrAttrgroupRelation> attrAttrgroupRelations = attrAttrgroupRelationMapper.selectList(new LambdaQueryWrapper<AttrAttrgroupRelation>().eq(AttrAttrgroupRelation::getAttrGroupId, attrgroupId));
+        if (attrAttrgroupRelations == null || attrAttrgroupRelations.size() == 0){
+            return new ArrayList<>();
+        }
         List<Long> collect = attrAttrgroupRelations.stream().map(AttrAttrgroupRelation::getAttrId).collect(Collectors.toList());
 
         return attrService.listByIds(collect);

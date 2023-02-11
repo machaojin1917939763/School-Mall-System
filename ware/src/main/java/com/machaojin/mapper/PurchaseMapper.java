@@ -1,6 +1,8 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.machaojin.domain.Purchase;
 
 /**
@@ -10,7 +12,7 @@ import com.machaojin.domain.Purchase;
  * @date 2022-10-06
  */
 @org.apache.ibatis.annotations.Mapper
-public interface PurchaseMapper 
+public interface PurchaseMapper extends BaseMapper<Purchase>
 {
     /**
      * 查询采购信息
@@ -59,4 +61,11 @@ public interface PurchaseMapper
      * @return 结果
      */
     public int deletePurchaseByIds(Long[] ids);
+
+    /**
+     * 查询未合并的采购信息
+     * @param purchase 采购信息
+     * @return 结果
+     */
+    List<Purchase> selectUnPurchaseList(Purchase purchase);
 }

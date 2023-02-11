@@ -23,12 +23,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectSpuInfoList" parameterType="SpuInfo" resultMap="SpuInfoResult">
         <include refid="selectSpuInfoVo"/>
         <where>  
-            <if test="spuName != null  and spuName != ''"> and spu_name like concat('%', #{spuName}, '%')</if>
-            <if test="spuDescription != null  and spuDescription != ''"> and spu_description = #{spuDescription}</if>
-            <if test="catalogId != null "> and catalog_id = #{catalogId}</if>
-            <if test="brandId != null "> and brand_id = #{brandId}</if>
-            <if test="weight != null "> and weight = #{weight}</if>
-            <if test="publishStatus != null "> and publish_status = #{publishStatus}</if>
+            <if test="spuInfo.spuName != null  and spuInfo.spuName != ''"> and spu_name = #{spuInfo.spuName}</if>
+            <if test="spuInfo.spuDescription != null  and spuInfo.spuDescription != ''"> and spu_description = #{spuInfo.spuDescription}</if>
+            <if test="spuInfo.catalogId != null "> and catalog_id = #{spuInfo.catalogId}</if>
+            <if test="spuInfo.brandId != null "> and brand_id = #{spuInfo.brandId}</if>
+            <if test="spuInfo.weight != null "> and weight = #{spuInfo.weight}</if>
+            <if test="spuInfo.publishStatus != null "> and publish_status = #{spuInfo.publishStatus}</if>
+            <if test="key != null ">  and spu_name like concat('%', #{key}, '%')</if>
         </where>
     </select>
     

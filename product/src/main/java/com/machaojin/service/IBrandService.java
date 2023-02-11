@@ -1,6 +1,9 @@
 package com.machaojin.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.machaojin.domain.Attr;
 import com.machaojin.domain.Brand;
 
 /**
@@ -10,7 +13,7 @@ import com.machaojin.domain.Brand;
  * @date 2022-10-05
  */
 
-public interface IBrandService 
+public interface IBrandService extends IService<Brand>
 {
     /**
      * 查询品牌

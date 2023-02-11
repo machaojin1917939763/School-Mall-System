@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,6 +35,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
 @Slf4j
 @RestController
 @RequestMapping("/machaojin/category")
+@Transactional(rollbackFor = Exception.class)
 public class CategoryController extends BaseController
 {
     @Autowired
@@ -47,7 +49,7 @@ public class CategoryController extends BaseController
         List<Category> categories = categoryService.selectCategoryList(null);
         //组成树形结构
         //找出所有的一级分类以及找到所有的子菜单
-        List<Category> collect = categories
+        return categories
                 .stream()
                 //过滤出来所有的一级菜单
                 .filter((category) ->
@@ -61,7 +63,6 @@ public class CategoryController extends BaseController
                 })
                 //变成一个集合
                 .collect(Collectors.toList());
-        return collect;
     }
 
 
@@ -155,7 +156,7 @@ public class CategoryController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('machaojin:category:edit')")
     @Log(title = "商品三级分类", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PostMapping("/update")
     public AjaxResult edit(@RequestBody Category category)
     {
         return toAjax(categoryService.updateCategory(category));

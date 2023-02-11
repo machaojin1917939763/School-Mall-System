@@ -5,10 +5,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.machaojin.vo.AttrRelationVo;
 import com.machaojin.vo.AttrReqVo;
 import com.machaojin.vo.AttrVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
@@ -27,6 +29,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/machaojin/attr")
+@Transactional(rollbackFor = Exception.class)
 public class AttrController extends BaseController
 {
     @Autowired
@@ -99,7 +102,7 @@ public class AttrController extends BaseController
     @PreAuthorize("@ss.hasPermi('machaojin:attr:edit')")
     @Log(title = "商品属性", businessType = BusinessType.UPDATE)
     @PostMapping("/update")
-    public AjaxResult edit(@RequestBody Attr attr)
+    public AjaxResult edit(@RequestBody AttrVo attr)
     {
         return toAjax(attrService.updateAttr(attr));
     }

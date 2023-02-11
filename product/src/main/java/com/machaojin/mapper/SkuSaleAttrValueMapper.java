@@ -1,7 +1,10 @@
 package com.machaojin.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.machaojin.domain.SkuSaleAttrValue;
+import com.machaojin.domain.SpuInfo;
 
 /**
  * sku销售属性&值Mapper接口
@@ -10,7 +13,7 @@ import com.machaojin.domain.SkuSaleAttrValue;
  * @date 2022-10-05
  */
 @org.apache.ibatis.annotations.Mapper
-public interface SkuSaleAttrValueMapper 
+public interface SkuSaleAttrValueMapper extends BaseMapper<SkuSaleAttrValue>
 {
     /**
      * 查询sku销售属性&值
