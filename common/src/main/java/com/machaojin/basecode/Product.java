@@ -23,6 +23,10 @@ public class Product {
 
         FAILED(0,"failed"),
 
+        SPU_UP(1,"商品上架"),
+
+        SPU_DOWN(0,"商品下架"),
+
         /**
          * 查询类型，是否是全部
          */

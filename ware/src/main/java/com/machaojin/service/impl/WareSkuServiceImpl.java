@@ -1,5 +1,6 @@
 package com.machaojin.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,5 +90,20 @@ public class WareSkuServiceImpl implements IWareSkuService
     public int deleteWareSkuById(Long id)
     {
         return wareSkuMapper.deleteWareSkuById(id);
+    }
+
+    /**
+     * 查询传递过来的skuid是否有库存
+     * @param skuIds
+     * @return
+     */
+    @Override
+    public HashMap<Long, Boolean> selectHasStock(List<Long> skuIds) {
+        List<WareSku> wareSkus =  wareSkuMapper.selectHasStock(skuIds);
+        HashMap<Long,Boolean> map = new HashMap<>();
+        for (WareSku skus : wareSkus) {
+            map.put(skus.getSkuId(), skus.getStock() > 0);
+        }
+        return map;
     }
 }

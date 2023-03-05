@@ -21,7 +21,16 @@
         <module>common</module>
         <module>gateway</module>
         <module>thirdparty</module>
+        <module>search</module>
     </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
+            <version>5.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 
 </project>

@@ -1,5 +1,6 @@
 package com.machaojin.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,6 +45,14 @@ public class WareSkuController extends BaseController
         startPage();
         List<WareSku> list = wareSkuService.selectWareSkuList(wareSku);
         return getDataTable(list);
+    }
+
+//    /has/stock
+    @PreAuthorize("@ss.hasPermi('machaojin:sku:list')")
+    @PostMapping("/has/stock")
+    public AjaxResult getHasStockInfos(@RequestBody List<Long> skuIds){
+       HashMap<Long,Boolean> map = wareSkuService.selectHasStock(skuIds);
+        return AjaxResult.success("map",map);
     }
 
     /**

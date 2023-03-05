@@ -14,6 +14,8 @@ public enum BaseCode {
      */
     UNKNOWN_EXCEPTION(1000,"系统未知错误"),
 
+    SKU_NOT_STOCK_EXCEPTION(1004,"商品没有库存"),
+
     DATA_DELETE_EXCEPTION(1002,"删除数据失败");
 
     private int code;

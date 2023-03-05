@@ -1,5 +1,6 @@
 package com.machaojin.service;
 
+import java.util.HashMap;
 import java.util.List;
 import com.machaojin.domain.WareSku;
 
@@ -59,4 +60,11 @@ public interface IWareSkuService
      * @return 结果
      */
     public int deleteWareSkuById(Long id);
+
+    /**
+     * 查询传递过来的skuid是否有库存
+     * @param skuIds
+     * @return
+     */
+    HashMap<Long, Boolean> selectHasStock(List<Long> skuIds);
 }

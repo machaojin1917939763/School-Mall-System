@@ -32,7 +32,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectWareSkuVo"/>
         where id = #{id}
     </select>
-        
+
+    <select id="selectHasStock" resultMap="WareSkuResult" parameterType="Long">
+        <include refid="selectWareSkuVo"/>
+        where sku_id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <insert id="insertWareSku" parameterType="WareSku" useGeneratedKeys="true" keyProperty="id">
         insert into wms_ware_sku
         <trim prefix="(" suffix=")" suffixOverrides=",">

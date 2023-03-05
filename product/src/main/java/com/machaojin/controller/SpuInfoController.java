@@ -101,6 +101,7 @@ public class SpuInfoController extends BaseController
         SpuInfo spuInfo = new SpuInfo();
         spuInfo.setUpdateTime(new Date());
         spuInfo.setPublishStatus(1);
+        //TODO
         spuInfo.setId(spuId);
         return toAjax(spuInfoService.updateSpuInfo(spuInfo));
     }

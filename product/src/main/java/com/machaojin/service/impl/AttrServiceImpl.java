@@ -149,7 +149,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper,Attr> implements IAt
             //同时修改关联表中的信息,把关联表中的分组 ID 修改成传递过来的数据
             AttrAttrgroupRelation attrAttrgroupRelation = new AttrAttrgroupRelation();
             attrAttrgroupRelation.setAttrId(attr.getAttrId());
-            attrAttrgroupRelation.setAttrGroupId(Long.parseLong(attr.getAttrGroupId()));
+            if(attr.getAttrGroupId() != null){
+                attrAttrgroupRelation.setAttrGroupId(Long.parseLong(attr.getAttrGroupId()));
+            }
             AttrAttrgroupRelation relation = attrAttrgroupRelationMapper.selectOne(new LambdaQueryWrapper<AttrAttrgroupRelation>().eq(AttrAttrgroupRelation::getAttrId, attr.getAttrId()));
             //如果存在就修改，不存在就添加
             if (relation == null){
@@ -215,8 +217,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper,Attr> implements IAt
         if (attr.getAttrType().equals(Product.ProductCode.PRODUCT_TYPE_BASE.getCode())){
             //保存关联关系
             AttrAttrgroupRelation attrAttrgroupRelation = new AttrAttrgroupRelation();
-
-            attrAttrgroupRelation.setAttrGroupId(Long.parseLong(attr.getAttrGroupId()));
+            if (!StringUtils.isEmpty(attr.getAttrGroupId())){
+                attrAttrgroupRelation.setAttrGroupId(Long.parseLong(attr.getAttrGroupId()));
+            }
             attrAttrgroupRelation.setAttrId(attra.getAttrId());
             List<AttrAttrgroupRelation> relations = new ArrayList<>();
             relations.add(attrAttrgroupRelation);
@@ -282,8 +285,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper,Attr> implements IAt
                     AttrAttrgroupRelation attrAttrgroupRelation = attrAttrgroupRelationMapper.selectOne(new LambdaQueryWrapper<AttrAttrgroupRelation>().eq(AttrAttrgroupRelation::getAttrId, a.getAttrId()));
                     if (attrAttrgroupRelation != null){
                         AttrGroup attrGroup = attrGroupMapper.selectOne(new LambdaQueryWrapper<AttrGroup>().eq(AttrGroup::getAttrGroupId, attrAttrgroupRelation.getAttrGroupId()));
-                        attrReqVo.setGroupName(attrGroup.getAttrGroupName());
-
+                        if (attrGroup != null){
+                            attrReqVo.setGroupName(attrGroup.getAttrGroupName());
+                        }
                     }
                 }
             }

@@ -52,6 +52,15 @@ public class GulimallProductControllerAdvice {
     }
 
     /**
+     * 商品没有库存异常
+     */
+    @ExceptionHandler(SkuNotStockException.class)
+    public AjaxResult skuNotStock(SkuNotStockException skuNotStockException){
+        log.error(skuNotStockException.getMessage());
+        return AjaxResult.error(BaseCode.SKU_NOT_STOCK_EXCEPTION.getCode(),BaseCode.SKU_NOT_STOCK_EXCEPTION.getMsg());
+    }
+
+    /**
      * 处理所有的未知错误
      * @param exception 所有异常的父类
      * @return 返回错误代码

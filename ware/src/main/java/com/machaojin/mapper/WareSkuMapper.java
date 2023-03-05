@@ -59,4 +59,12 @@ public interface WareSkuMapper
      * @return 结果
      */
     public int deleteWareSkuByIds(Long[] ids);
+
+
+    /**
+     * 根据skuid查询是否有库存
+     * @param skuIds
+     * @return
+     */
+    List<WareSku> selectHasStock(List<Long> skuIds);
 }

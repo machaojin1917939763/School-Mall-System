@@ -1,18 +1,28 @@
 package com.machaojin.service.impl;
 
-import java.util.Date;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.machaojin.basecode.Product;
 import com.machaojin.domain.*;
 import com.machaojin.domain.Attr;
 import com.machaojin.dto.SkuReductionTo;
 import com.machaojin.dto.SpuBoundsDto;
+import com.machaojin.dto.WareSkuDto;
+import com.machaojin.dto.es.SpuUpDto;
+import com.machaojin.exception.BaseCode;
+import com.machaojin.exception.SkuNotStockException;
 import com.machaojin.feign.CouponFeignService;
+import com.machaojin.feign.SearchFeignClients;
+import com.machaojin.feign.WareFeignService;
 import com.machaojin.service.*;
 import com.machaojin.vo.*;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.spring.SpringUtils;
+import com.ruoyi.framework.web.domain.AjaxResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +65,18 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper,SpuInfo> imple
 
     @Autowired
     private CouponFeignService couponFeignService;
+
+    @Autowired
+    private ICategoryService categoryService;
+
+    @Autowired
+    private IBrandService brandService;
+
+    @Autowired
+    private WareFeignService wareFeignService;
+
+    @Autowired
+    private SearchFeignClients searchFeignClients;
 
     /**
      * 查询spu信息
@@ -104,7 +126,80 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper,SpuInfo> imple
     public int updateSpuInfo(SpuInfo spuInfo)
     {
         spuInfo.setUpdateTime(DateUtils.getNowDate());
-        return spuInfoMapper.updateSpuInfo(spuInfo);
+        //查询出信息，发送给es，进行保存
+        //1、查询pms_sku_info表，根据spuId查询
+        List<SkuInfo> skuInfos = skuInfoService.list(new LambdaQueryWrapper<SkuInfo>().eq(SkuInfo::getSpuId, spuInfo.getId()));
+        List<Long> skuIds = skuInfos.stream().map((SkuInfo::getSkuId)).collect(Collectors.toList());
+        //远程查询库存
+        AjaxResult hasStockInfos = wareFeignService.getHasStockInfos(skuIds);
+        HashMap<Long,Boolean> map = (HashMap<Long, Boolean>) hasStockInfos.get("map");
+        //查询所有的销售属性attrs
+        List<Attr> list = attrService.list(new LambdaQueryWrapper<Attr>().eq(Attr::getAttrType,"0"));
+
+        HashSet<Long> attrNames = new HashSet<>();
+        list.forEach((a) -> {
+            attrNames.add(a.getAttrId());
+        });
+
+        List<SpuUpDto> spuUpDtos = skuInfos.stream().map((sku) -> {
+            SpuUpDto spuUpDto = new SpuUpDto();
+            BeanUtils.copyProperties(sku, spuUpDto);
+            //解决字段不一样问题
+            spuUpDto.setSkuPrice(sku.getPrice());
+            spuUpDto.setSkuImg(sku.getSkuDefaultImg());
+            //hasScore、hasStock、brandId、catalogId、brandName、BrandImg、catalogName、attrs
+            //根据CategoryId查询出Catalog信息
+            Category category = categoryService.selectCategoryByCatId(sku.getCatalogId());
+            spuUpDto.setCatalogName(category.getName());
+            //根据品牌id查询品牌信息
+            Brand brand = brandService.selectBrandByBrandId(sku.getBrandId());
+            spuUpDto.setBrandImg(brand.getLogo());
+            spuUpDto.setBrandName(brand.getName());
+            //设置商品热度
+            spuUpDto.setHotScore(0L);
+            //看商品是否有库存，如果有，就能正常上架，如果没有就不能上架,需要发送远程请求
+            /*
+            在远程调用接口查询库存的时候，如果有多个数据，一起发送key8节省很多时间
+             */
+            if (map == null){
+                spuUpDto.setHasStock(false);
+            }else{
+                Boolean aBoolean = map.get(sku.getSkuId());
+                if (aBoolean == null){
+                    spuUpDto.setHasStock(false);
+                }
+                spuUpDto.setHasStock(aBoolean);
+            }
+            //查询出所有关联的属性
+            List<SkuSaleAttrValue> attrValues = skuSaleAttrValueService.list(new LambdaQueryWrapper<SkuSaleAttrValue>().eq(SkuSaleAttrValue::getSkuId, sku.getSkuId()));
+            List<SpuUpDto.Attrs> attrs = new ArrayList<>();
+            for (SkuSaleAttrValue value : attrValues) {
+                if (attrNames.contains(value.getAttrId())){
+                    SpuUpDto.Attrs attr = new SpuUpDto.Attrs();
+                    BeanUtils.copyProperties(value,attr);
+                    attrs.add(attr);
+                }
+            }
+            spuUpDto.setAttrs(attrs);
+            return spuUpDto;
+        }).collect(Collectors.toList());
+
+        //发送远程请求请求es保存数据
+        boolean up = false;
+        try {
+           up  = searchFeignClients.productUp(spuUpDtos);
+        } catch (IOException e) {
+            log.error("上架失败");
+            e.printStackTrace();
+        }
+        log.error(up + "");
+        if(!up){
+            spuInfo.setPublishStatus(Product.ProductCode.SPU_UP.getCode());
+            spuInfo.setUpdateTime(new Date());
+            return spuInfoMapper.updateSpuInfo(spuInfo);
+        }else {
+            return 0;
+        }
     }
 
     /**
