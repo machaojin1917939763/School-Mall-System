@@ -7,6 +7,8 @@ import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
 import org.apache.ibatis.type.Alias;
 
+import java.io.Serializable;
+
 /**
  * 属性&属性分组关联对象 pms_attr_attrgroup_relation
  * 
@@ -15,7 +17,7 @@ import org.apache.ibatis.type.Alias;
  */
 @Alias("AttrAttrgroupRelation")
 @TableName("pms_attr_attrgroup_relation")
-public class AttrAttrgroupRelation
+public class AttrAttrgroupRelation implements Serializable
 {
     private static final long serialVersionUID = 1L;
 

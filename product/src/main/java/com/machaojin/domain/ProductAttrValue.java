@@ -7,6 +7,8 @@ import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
 import org.apache.ibatis.type.Alias;
 
+import java.io.Serializable;
+
 /**
  * spu属性值对象 pms_product_attr_value
  * 
@@ -15,7 +17,7 @@ import org.apache.ibatis.type.Alias;
  */
 @Alias("ProductAttrValue")
 @TableName("pms_product_attr_value")
-public class ProductAttrValue
+public class ProductAttrValue implements Serializable
 {
     private static final long serialVersionUID = 1L;
 

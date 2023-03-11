@@ -2,10 +2,11 @@ package com.machaojin.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class AttrGroupWithAttrsVo {
+public class AttrGroupWithAttrsVo implements Serializable {
 
     /**
      * 分组id

@@ -1,10 +1,12 @@
 package com.machaojin.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.machaojin.domain.Category;
 import com.machaojin.domain.CommentReplay;
+import com.machaojin.vo.Category2Vo;
 
 /**
  * 商品三级分类Service接口
@@ -62,4 +64,16 @@ public interface ICategoryService extends IService<Category>
      * @return 结果
      */
     public int deleteCategoryByCatId(Long catId);
+
+    /**
+     * 查询商品的一级分类
+     * @return 返回商品的以及分类
+     */
+    List<Category> getCategoryLevel1();
+
+    /**
+     * 根据一级分类获取二级三级分类
+     * @return 返回23级分类
+     */
+    HashMap<String,List<Category2Vo>> getCategoryLevel23();
 }

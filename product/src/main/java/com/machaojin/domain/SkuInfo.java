@@ -1,5 +1,6 @@
 package com.machaojin.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -18,7 +19,7 @@ import org.apache.ibatis.type.Alias;
  */
 @Alias("SkuInfo")
 @TableName("pms_sku_info")
-public class SkuInfo
+public class SkuInfo implements Serializable
 {
     private static final long serialVersionUID = 1L;
 

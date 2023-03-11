@@ -7,6 +7,8 @@ import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
 import org.apache.ibatis.type.Alias;
 
+import java.io.Serializable;
+
 /**
  * spu图片对象 pms_spu_images
  * 
@@ -15,7 +17,7 @@ import org.apache.ibatis.type.Alias;
  */
 @Alias("SpuImages")
 @TableName("pms_spu_images")
-public class SpuImages
+public class SpuImages implements Serializable
 {
     private static final long serialVersionUID = 1L;
 

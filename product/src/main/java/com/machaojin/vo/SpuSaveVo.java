@@ -5,6 +5,7 @@ package com.machaojin.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * @website http://www.bejson.com/java2pojo/
  */
 @Data
-public class SpuSaveVo {
+public class SpuSaveVo implements Serializable {
 
     private String spuName;
     private String spuDescription;

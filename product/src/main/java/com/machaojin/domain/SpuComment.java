@@ -6,6 +6,8 @@ import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
 import org.apache.ibatis.type.Alias;
 
+import java.io.Serializable;
+
 /**
  * 商品评价对象 pms_spu_comment
  * 
@@ -13,7 +15,7 @@ import org.apache.ibatis.type.Alias;
  * @date 2022-10-05
  */
 @Alias("SpuComment")
-public class SpuComment extends BaseEntity
+public class SpuComment implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
@@ -222,7 +224,6 @@ public class SpuComment extends BaseEntity
             .append("memberNickName", getMemberNickName())
             .append("star", getStar())
             .append("memberIp", getMemberIp())
-            .append("createTime", getCreateTime())
             .append("showStatus", getShowStatus())
             .append("spuAttributes", getSpuAttributes())
             .append("likesCount", getLikesCount())

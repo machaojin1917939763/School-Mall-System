@@ -5,6 +5,8 @@ package com.machaojin.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * Auto-generated: 2019-11-26 10:50:34
  *
@@ -12,7 +14,7 @@ import lombok.Data;
  * @website http://www.bejson.com/java2pojo/
  */
 @Data
-public class Attr {
+public class Attr  implements Serializable {
 
     private Long attrId;
     private String attrName;

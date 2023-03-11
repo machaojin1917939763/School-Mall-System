@@ -6,10 +6,11 @@ import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-public class SkuInfoVo  {
+public class SkuInfoVo  implements Serializable {
     private Double min;
     private Double max;
 

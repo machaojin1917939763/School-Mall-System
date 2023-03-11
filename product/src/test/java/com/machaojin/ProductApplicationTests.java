@@ -2,21 +2,23 @@ package com.machaojin;
 
 
 
-import com.machaojin.domain.Category;
-import com.machaojin.service.ICategoryService;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.List;
 
+@RunWith(SpringRunner.class)
 @SpringBootTest
-class ProductApplicationTests {
+public class ProductApplicationTests {
+    @Autowired
+    private RedissonClient redissonClient;
 
+    @Test
+    public void test(){
+        System.out.println(redissonClient);
+    }
 
 }

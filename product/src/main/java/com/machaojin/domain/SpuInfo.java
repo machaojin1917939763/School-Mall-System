@@ -1,5 +1,6 @@
 package com.machaojin.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -21,7 +22,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("SpuInfo")
 @TableName("pms_spu_info")
 @Data
-public class SpuInfo
+public class SpuInfo implements Serializable
 {
     private static final long serialVersionUID = 1L;
 

@@ -1,10 +1,13 @@
 package com.machaojin.domain;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
 import org.apache.ibatis.type.Alias;
+
+import java.io.Serializable;
 
 /**
  * spu信息介绍对象 pms_spu_info_desc
@@ -12,8 +15,9 @@ import org.apache.ibatis.type.Alias;
  * @author machaojin
  * @date 2022-10-05
  */
+@TableName("pms_spu_info_desc")
 @Alias("SpuInfoDesc")
-public class SpuInfoDesc extends BaseEntity
+public class SpuInfoDesc implements Serializable
 {
     private static final long serialVersionUID = 1L;
 

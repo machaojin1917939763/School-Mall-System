@@ -4,13 +4,15 @@ import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
+import java.io.Serializable;
+
 /**
  * @author machaojin
  * @version 1.0
  * @time 2022/11/24 19:23 星期四
  */
 @Alias("AttrVo")
-public class AttrVo {
+public class AttrVo implements Serializable {
     /** 属性id */
     private Long attrId;
 

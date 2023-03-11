@@ -1,5 +1,7 @@
 package com.machaojin.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -9,6 +11,7 @@ import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
 import org.apache.ibatis.type.Alias;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -19,11 +22,12 @@ import java.util.List;
  */
 @Alias("Category")
 @TableName("pms_category")
-public class Category extends BaseEntity
+public class Category implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
     /** 分类id */
+    @TableId
     private Long catId;
 
     /** 分类名称 */
@@ -40,7 +44,7 @@ public class Category extends BaseEntity
 
     /** 是否显示[0-不显示，1显示] */
     @Excel(name = "是否显示[0-不显示，1显示]")
-    @TableLogic(delval = "1",value = "0")
+    @TableLogic(delval = "0",value = "show_status")
     private Integer showStatus;
 
     /** 排序 */
@@ -65,6 +69,7 @@ public class Category extends BaseEntity
      */
     @Excel(name = "该分类的子分类")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @TableField(exist = false)
     private List<Category> children;
 
     public void setCatId(Long catId) 

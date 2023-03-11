@@ -9,6 +9,7 @@ import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
 import org.apache.ibatis.type.Alias;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @Alias("AttrGroup")
 @TableName("pms_attr_group")
-public class AttrGroup
+public class AttrGroup implements Serializable
 {
     private static final long serialVersionUID = 1L;
 

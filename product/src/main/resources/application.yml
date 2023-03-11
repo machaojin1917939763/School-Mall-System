@@ -13,14 +13,18 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
-  #配置阿里的OSS云存储key
-  cloud:
-    alicloud:
-      access-key: LTAI5tB3z4Pp32ihGgtDemZ5
-      secret-key: DQJTUDrbGya4EQk30CtHHh7U7AO9gZ
-      #地址
-      oss:
-        endpoint: https://oss-cn-hangzhou.aliyuncs.com
+  thymeleaf:
+    cache: false #关闭缓存
+  redis:
+    host: 101.42.149.76
+    port: 6379
+  cache:
+    type: redis
+    redis:
+      time-to-live: 360000 #缓存过期时间
+      key-prefix: PRODUCT_ #缓存前缀
+      use-key-prefix: true
+      cache-null-values: true #是否缓存空值，用于解决缓存穿透问题
 
 
 
@@ -38,6 +42,7 @@ mybatis-plus:
       id-type: auto
       logic-delete-field: 1
       logic-not-delete-value: 0
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
 

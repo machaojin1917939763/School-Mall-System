@@ -2,6 +2,7 @@ package com.machaojin.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  * 			"groupName": "主体", //所属分组名字
  */
 
-public class AttrReqVo extends AttrVo{
+public class AttrReqVo extends AttrVo implements Serializable {
     private String catelogName;
     private String groupName;
     private List<Long> catelogPath;

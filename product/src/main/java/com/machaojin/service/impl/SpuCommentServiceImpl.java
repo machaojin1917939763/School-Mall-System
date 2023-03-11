@@ -57,7 +57,6 @@ public class SpuCommentServiceImpl extends ServiceImpl<SpuCommentMapper, SpuComm
     @Override
     public int insertSpuComment(SpuComment spuComment)
     {
-        spuComment.setCreateTime(DateUtils.getNowDate());
         return spuCommentMapper.insertSpuComment(spuComment);
     }
 

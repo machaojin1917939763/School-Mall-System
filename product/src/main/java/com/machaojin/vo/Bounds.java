@@ -5,6 +5,7 @@ package com.machaojin.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
  * @website http://www.bejson.com/java2pojo/
  */
 @Data
-public class Bounds {
+public class Bounds implements Serializable {
 
     private BigDecimal buyBounds;
     private BigDecimal growBounds;

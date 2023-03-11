@@ -23,6 +23,13 @@ spring:
          filters:
            - RewritePath=/api/product/?(?<segment>.*), /$\{segment}
 
+        #产品网址路由
+       - id: product_route_gulimall
+         uri: lb://product
+         predicates:
+           - Host=**.machaojin.com,machaojin.com
+
+
       #会员服务路由
        - id: member_route
          uri: lb://member

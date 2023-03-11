@@ -7,6 +7,8 @@ import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
 import org.apache.ibatis.type.Alias;
 
+import java.io.Serializable;
+
 /**
  * 品牌分类关联对象 pms_category_brand_relation
  * 
@@ -15,7 +17,7 @@ import org.apache.ibatis.type.Alias;
  */
 @Alias("CategoryBrandRelation")
 @TableName("pms_category_brand_relation")
-public class CategoryBrandRelation
+public class CategoryBrandRelation implements Serializable
 {
     private static final long serialVersionUID = 1L;
 

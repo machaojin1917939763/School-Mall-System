@@ -6,6 +6,8 @@ import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
 import org.apache.ibatis.type.Alias;
 
+import java.io.Serializable;
+
 /**
  * 商品评价回复关系对象 pms_comment_replay
  * 
@@ -13,7 +15,7 @@ import org.apache.ibatis.type.Alias;
  * @date 2022-10-05
  */
 @Alias("CommentReplay")
-public class CommentReplay extends BaseEntity
+public class CommentReplay implements Serializable
 {
     private static final long serialVersionUID = 1L;
 

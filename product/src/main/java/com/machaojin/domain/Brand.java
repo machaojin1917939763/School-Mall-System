@@ -11,6 +11,7 @@ import org.apache.ibatis.type.Alias;
 import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 
 /**
  * 品牌对象 pms_brand
@@ -23,7 +24,7 @@ import javax.validation.constraints.*;
  *
  */
 @Alias("Brand")
-public class Brand extends BaseEntity
+public class Brand implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
