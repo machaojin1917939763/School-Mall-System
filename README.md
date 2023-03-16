@@ -6,16 +6,16 @@ School-Mall-System是一款用于学校内一个中小型的商品交易平台�
 #### 软件架构
 ```
 School-Mall-System
-├── common -- 工具类及通用代码
-├── RuoYIi -- Ruoyi工具自动生产代码
-├── coupon -- 优惠券系统
+├── common --  工具类及通用代码
+├── RuoYIi --  Ruoyi工具自动生产代码
+├── coupon --  优惠券系统
 ├── gateway -- 后台商城管理路由系统
-├── search -- 基于Elasticsearch的商品搜索系统
-├── member -- 会员系统
+├── search --  基于Elasticsearch的商品搜索系统
+├── member --  会员系统
 |—— product -- 商城商品管理系统
 |—— renren-fast -- 商城后端台管理系统（前后分离）
-|—— ware -- 商品库存系统
-|—— order -- 订单系统
+|—— ware --    商品库存系统
+|—— order --   订单系统
 └── 未完待续
 ```
 
@@ -23,38 +23,38 @@ School-Mall-System
 #### 技术选型
 后端技术
 ```
-技术	说明	
-SpringBoot	Web应用开发框架	
-SpringCloud 分布式框架
-SpringSecurity	认证和授权框架	
-MyBatis	ORM框架
-MyBatis Plus MyBatis增强
-Ruoyi	数据层代码生成器	
-Elasticsearch	搜索引擎	
-RabbitMQ	消息队列（当前未整合）	
-Redis	内存数据存储		
-Kibana	日志可视化查看工具	
-Nginx	静态资源服务器	
-Docker	应用容器引擎	
-Jenkins	自动化部署工具	（当前未整合）	
-Druid	数据库连接池	
-OSS	对象存储	
-JWT	JWT登录支持	（当前未整合）
-Lombok	Java语言增强库	
-Hutool	Java工具类库	
-PageHelper	MyBatis物理分页插件	
-Swagger-UI	API文档生成工具	
-SpringCache 缓存框架
+技术	                 说明	
+SpringBoot	          Web应用开发框架	
+SpringCloud           分布式框架
+SpringSecurity	      认证和授权框架	
+MyBatis	              ORM框架
+MyBatis Plus          MyBatis增强
+Ruoyi	                数据层代码生成器	
+Elasticsearch	        搜索引擎	
+RabbitMQ	            消息队列（当前未整合）	
+Redis	                内存数据存储		
+Kibana	              日志可视化查看工具	
+Nginx	                静态资源服务器	
+Docker	              应用容器引擎	
+Jenkins	              自动化部署工具	（当前未整合）	
+Druid	                数据库连接池	
+OSS	                  对象存储	
+JWT	JWT               登录支持	（当前未整合）
+Lombok	              Java语言增强库	
+Hutool	              Java工具类库	
+PageHelper	          MyBatis物理分页插件	
+Swagger-UI	          API文档生成工具	
+SpringCache           缓存框架
 未完待续。。。
 ```
 ### 前端技术
 ```
-技术	说明	
-Vue	前端框架	
-Vue-router	路由框架	
-Vuex	全局状态管理框架	
-Element	前端UI框架	
-Axios	前端HTTP框架	
-Thymeleaf 模板引擎
+技术	                说明	
+Vue	                  前端框架	
+Vue-router	          路由框架	
+Vuex	                全局状态管理框架	
+Element	              前端UI框架	
+Axios	                前端HTTP框架	
+Thymeleaf             模板引擎
 未完待续。。。
 ```
